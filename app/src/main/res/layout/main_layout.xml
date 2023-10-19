@@ -37,7 +37,7 @@
             android:textStyle="bold"
             android:textSize="26sp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_tTopOf="@id/searchBar"
+            app:layout_constraintBottom_toTopOf="@id/searchBar"
             app:layout_constraintStart_toStartOf="@id/pokedexIcon" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -86,8 +86,9 @@
                 android:layout_marginStart="6dp"
                 android:layout_marginEnd="20dp"
                 android:hint="Search"
+                android:textColorHint="@color/medium_grayscale"
                 android:textAlignment="textStart"
-                android:textColor="@color/medium_grayscale"
+                android:textColor="@color/black"
                 android:textSize="13sp"
                 app:flow_verticalAlign="top"
                 android:backgroundTint="@color/white"

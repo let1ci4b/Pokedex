@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="110dp"
-    android:layout_height="114dp"
+    android:layout_width="115dp"
+    android:layout_height="119dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="5dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cardCornerRadius="10dp"
     app:cardBackgroundColor="@android:color/white"
     android:layout_margin="10dp"
-    app:cardElevation="8dp">
+    app:cardElevation="5dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -19,10 +20,44 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="5dp"
         android:layout_marginTop="5dp"
-        android:text="#999"
+        android:textSize="12sp"
         android:textColor="@color/medium_grayscale"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="#999"/>
+
+        <ImageView
+            android:id="@+id/pokemonCardBackground"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:src="@drawable/card_pokemon_shadow"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:tint="@color/light_grayscale" />
+
+        <ImageView
+            android:id="@+id/pokemonIcon"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:src="@drawable/ic_default_pokemon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/pokemonName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/dark_grayscale"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pokemonIcon"
+            tools:text="Pokémon Name" />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

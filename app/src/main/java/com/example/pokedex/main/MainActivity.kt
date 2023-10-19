@@ -12,4 +12,6 @@ class MainActivity : AppCompatActivity() {
         binding = MainLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
+
+    // TODO use layer list or gradient to implement inner shadow
 }

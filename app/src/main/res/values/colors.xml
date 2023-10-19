@@ -33,5 +33,5 @@
     <color name="medium_grayscale">#666666</color>
     <color name="light_grayscale">#E0E0E0</color>
     <color name="background_grayscale">#EFEFEF</color>
-    <color name="white_grayscale">#FFFFFF</color>
+    <color name="wireframe_grayscale">#B8B8B8</color>
 </resources>
