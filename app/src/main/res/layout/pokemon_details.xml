@@ -74,15 +74,15 @@
 
         <TextView
             android:id="@+id/pokemonType1"
-            android:layout_width="55dp"
-            android:layout_height="25dp"
-            android:layout_marginStart="135dp"
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="140dp"
             android:layout_marginTop="60dp"
             android:background="@drawable/recycler_background"
             android:backgroundTint="@color/medium_grayscale"
             android:gravity="center"
             android:textColor="@color/white"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -90,11 +90,11 @@
 
         <TextView
             android:id="@+id/pokemonType2"
-            android:layout_width="55dp"
-            android:layout_height="25dp"
-            android:layout_marginEnd="135dp"
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="140dp"
             android:layout_marginTop="60dp"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:gravity="center"
@@ -110,7 +110,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:text="About"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/wireframe_grayscale"
             app:layout_constraintTop_toBottomOf="@id/pokemonType1"
@@ -121,8 +121,8 @@
             android:id="@+id/layoutAbout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="50dp"
-            android:layout_marginVertical="20dp"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginVertical="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/titleAbout" >
@@ -138,8 +138,8 @@
 
                 <View
                     android:id="@+id/divider"
-                    android:layout_width="2dp"
-                    android:layout_height="70dp"
+                    android:layout_width="1dp"
+                    android:layout_height="65dp"
                     android:background="@color/light_grayscale"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -168,7 +168,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="7dp"
                         android:textColor="@color/dark_grayscale"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         app:layout_constraintStart_toEndOf="@id/weightIcon"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="9,9 kg" />
@@ -182,7 +182,7 @@
                     android:layout_marginTop="15dp"
                     android:text="Weight"
                     android:textColor="@color/medium_grayscale"
-                    android:textSize="12sp"
+                    android:textSize="10sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/weightHeader" />
@@ -200,8 +200,8 @@
 
                 <View
                     android:id="@+id/divider1"
-                    android:layout_width="2dp"
-                    android:layout_height="70dp"
+                    android:layout_width="1dp"
+                    android:layout_height="65dp"
                     android:background="@color/light_grayscale"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -230,7 +230,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="7dp"
                         android:textColor="@color/dark_grayscale"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         app:layout_constraintStart_toEndOf="@id/heightIcon"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="9,9 m" />
@@ -244,7 +244,7 @@
                     android:layout_marginTop="15dp"
                     android:text="Height"
                     android:textColor="@color/medium_grayscale"
-                    android:textSize="12sp"
+                    android:textSize="10sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/heightHeader" />
@@ -265,22 +265,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/dark_grayscale"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="9,9 m" />
+                    tools:text="Ability 1" />
 
                 <TextView
                     android:id="@+id/pokemonMove2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/dark_grayscale"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/pokemonMove1"
-                    tools:text="9,9 m" />
+                    tools:text="Ability 2" />
 
                 <TextView
                     android:id="@+id/movesTitle"
@@ -289,10 +289,291 @@
                     android:layout_marginTop="5dp"
                     android:text="Moves"
                     android:textColor="@color/medium_grayscale"
-                    android:textSize="12sp"
+                    android:textSize="10sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/pokemonMove2" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/pokemonDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="25dp"
+            android:justificationMode="inter_word"
+            android:lineSpacingExtra="-2sp"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layoutAbout"
+            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc iaculis eros vitae tellus condimentum maximus sit amet in eros." />
+
+        <TextView
+            android:id="@+id/titleStatsLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Base Stats"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/wireframe_grayscale"
+            app:layout_constraintTop_toBottomOf="@id/pokemonDescription"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/baseStatsLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="25dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/titleStatsLayout" >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/baseStatsNames"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" >
+
+                <TextView
+                    android:id="@+id/hpTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="HP"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/wireframe_grayscale"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/atkTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ATK"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/wireframe_grayscale"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/hpTitle" />
+
+                <TextView
+                    android:id="@+id/defTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DEF"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/wireframe_grayscale"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/atkTitle" />
+
+                <TextView
+                    android:id="@+id/satkTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SATK"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/wireframe_grayscale"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/defTitle" />
+
+                <TextView
+                    android:id="@+id/sdefTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SDEF"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/wireframe_grayscale"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/satkTitle" />
+
+                <TextView
+                    android:id="@+id/spdfTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SPD"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/wireframe_grayscale"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/sdefTitle" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/divider3"
+                android:layout_width="1dp"
+                android:layout_height="120dp"
+                android:layout_marginStart="10dp"
+                android:background="@color/light_grayscale"
+                app:layout_constraintStart_toEndOf="@id/baseStatsNames"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/baseStatsValues"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                app:layout_constraintStart_toEndOf="@id/divider3"
+                app:layout_constraintTop_toTopOf="parent" >
+
+                <TextView
+                    android:id="@+id/hpdValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="999"
+                    android:textSize="12sp"
+                    android:textColor="@color/dark_grayscale"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/atkValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="999"
+                    android:textSize="12sp"
+                    android:textColor="@color/dark_grayscale"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/hpdValue" />
+
+                <TextView
+                    android:id="@+id/defValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="999"
+                    android:textSize="12sp"
+                    android:textColor="@color/dark_grayscale"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/atkValue" />
+
+                <TextView
+                    android:id="@+id/satkValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="999"
+                    android:textSize="12sp"
+                    android:textColor="@color/dark_grayscale"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/defValue" />
+
+                <TextView
+                    android:id="@+id/sdefValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="999"
+                    android:textSize="12sp"
+                    android:textColor="@color/dark_grayscale"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/satkValue" />
+
+                <TextView
+                    android:id="@+id/spdValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="999"
+                    android:textSize="12sp"
+                    android:textColor="@color/dark_grayscale"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/sdefValue" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/baseStatsProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="10dp"
+                app:layout_constraintStart_toEndOf="@id/baseStatsValues"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" >
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/hpProgressBar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:indicatorColor="@color/wireframe_grayscale"
+                    android:progress="50"
+                    app:trackCornerRadius="10dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/atkProgressBar"/>
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/atkProgressBar"
+                    android:layout_width="260dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    app:indicatorColor="@color/wireframe_grayscale"
+                    android:progress="50"
+                    app:trackCornerRadius="10dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/hpProgressBar"
+                    app:layout_constraintBottom_toTopOf="@id/defProgressBar"/>
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/defProgressBar"
+                    android:layout_width="260dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    app:indicatorColor="@color/wireframe_grayscale"
+                    android:progress="50"
+                    app:trackCornerRadius="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/atkProgressBar"
+                    app:layout_constraintBottom_toTopOf="@id/satkProgressBar"/>
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/satkProgressBar"
+                    android:layout_width="260dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    app:indicatorColor="@color/wireframe_grayscale"
+                    android:progress="50"
+                    app:trackCornerRadius="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/defProgressBar"
+                    app:layout_constraintBottom_toTopOf="@id/sdefProgressBar"/>
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/sdefProgressBar"
+                    android:layout_width="260dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    app:indicatorColor="@color/wireframe_grayscale"
+                    android:progress="50"
+                    app:trackCornerRadius="10dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/satkProgressBar"
+                    app:layout_constraintBottom_toTopOf="@id/spdProgressBar" />
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/spdProgressBar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    app:indicatorColor="@color/wireframe_grayscale"
+                    android:progress="50"
+                    app:trackCornerRadius="10dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/sdefProgressBar"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -341,7 +622,5 @@
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

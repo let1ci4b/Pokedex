@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     app:cardCornerRadius="10dp"
     app:cardBackgroundColor="@android:color/white"
-    android:layout_margin="10dp"
+    android:layout_margin="5dp"
     app:cardElevation="5dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -34,7 +34,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:tint="@color/light_grayscale" />
+            app:tint="@color/background_grayscale" />
 
         <ImageView
             android:id="@+id/pokemonIcon"
