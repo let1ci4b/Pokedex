@@ -21,6 +21,11 @@
             <category android:name="android.intent.category.LAUNCHER"/>
         </intent-filter>
     </activity>
+        <activity android:name=".main.pokemonDetails.PokemonDetailsActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".main.main.MainActivity">
+        </activity>
 
     </application>
 
