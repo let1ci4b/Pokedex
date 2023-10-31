@@ -8,6 +8,13 @@ import com.example.pokedex.main.pokemonDetails.PokemonDetailsActivity
 
 class RecyclerViewViewHolder(private var binding: CardPokemonBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(pokemon : PokemonResponse) {
+        var completeId = {
+            when(pokemon.id.toString().length) {
+                1 -> "#00"
+                2 -> "#0"
+                else -> "#"
+            }
+        }
         with(binding) {
             pokemonName.text = pokemon.name
             pokemonCode.text = pokemon.id.toString()
@@ -19,8 +26,8 @@ class RecyclerViewViewHolder(private var binding: CardPokemonBinding) : Recycler
         with(binding) {
             pokemonCardBackground.setOnClickListener {
                 val intent = Intent(it.context, PokemonDetailsActivity::class.java)
-                intent.putExtra("pokemon", id)
-                it.context.startActivity(Intent(it.context, PokemonDetailsActivity::class.java))
+                intent.putExtra("POKEMON", id)
+                it.context.startActivity(intent)
             }
         }
     }

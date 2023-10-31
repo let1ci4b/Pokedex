@@ -14,6 +14,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
 
     // TODO use layer list or gradient to implement inner shadow
+    // TODO implement load on activity create
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = MainLayoutBinding.inflate(layoutInflater)
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.pokemon.observe(this@MainActivity) { pokedex ->
             pokedex.forEach { pokemon ->
                 Log.i("POKEMON", "${pokemon.name}")
+                recyclerViewAdapter.notifyDataSetChanged()
             }
         }
     }
@@ -40,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         var gridlayout = GridLayoutManager(this, 3)
         binding.recyclerView.apply {
             setHasFixedSize(false)
+
             adapter = recyclerViewAdapter
             layoutManager = gridlayout
         }

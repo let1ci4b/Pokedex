@@ -13,7 +13,11 @@ data class PokemonResponse(
     val weight: Int?,
     @SerializedName("sprites")
     val sprites: Sprites,
-    @SerializedName("types")
-    val types: List<SlotType>
+//    @SerializedName("types")
+//    val types: List<SlotType>,
+//    @SerializedName("moves")
+//    val moves: List<Moves>,
+    @SerializedName("flavor_text")
+    val flavor_text: String
     )
 
