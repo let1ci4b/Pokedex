@@ -1,8 +1,8 @@
-package com.example.pokedex.main.model
+package com.example.pokedex.main.dto
 
-import com.google.gson.annotations.SerializedName
+import com.google.gson.annotations.SerializedName // Retrofit recurse to indicate a JSON serialization
 
-data class PokemonResponse(
+data class PokemonResponseDTO(
     @SerializedName("id")
     var id : Int? = null,
     @SerializedName("name")
@@ -12,7 +12,7 @@ data class PokemonResponse(
     @SerializedName("weight")
     val weight: Int?,
     @SerializedName("sprites")
-    val sprites: Sprites,
+    val sprites: SpritesDTO,
 //    @SerializedName("types")
 //    val types: List<SlotType>,
 //    @SerializedName("moves")

@@ -4,9 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.recyclerview.widget.RecyclerView
 import com.example.pokedex.main.api.PokemonRepository
-import com.example.pokedex.main.model.PokemonResponse
+import com.example.pokedex.main.dto.PokemonResponseDTO
 import com.example.pokedex.main.pokemonData.PokemonMutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,8 +16,8 @@ private const val MAX_POKEMON_ID = 151
 
 class MainViewModel : ViewModel() {
     private val repository = PokemonRepository()
-    private val _pokemon = MutableLiveData<List<PokemonResponse>>()
-    val pokemon: LiveData<List<PokemonResponse>>
+    private val _pokemon = MutableLiveData<List<PokemonResponseDTO>>()
+    val pokemon: LiveData<List<PokemonResponseDTO>>
         get() = _pokemon
 
     fun getPokemon() {

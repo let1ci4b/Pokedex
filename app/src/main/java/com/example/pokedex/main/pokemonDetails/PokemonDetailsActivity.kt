@@ -3,7 +3,7 @@ package com.example.pokedex.main.pokemonDetails
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pokedex.databinding.PokemonDetailsBinding
-import com.example.pokedex.main.model.PokemonResponse
+import com.example.pokedex.main.dto.PokemonResponseDTO
 import com.example.pokedex.main.pokemonData.PokemonMutableList
 
 class PokemonDetailsActivity : AppCompatActivity() {
@@ -18,7 +18,7 @@ class PokemonDetailsActivity : AppCompatActivity() {
         position?.let { bindPokemonDetails(PokemonMutableList.pokemonData[it]) }
     }
 
-    private fun bindPokemonDetails(pokemon : PokemonResponse) {
+    private fun bindPokemonDetails(pokemon : PokemonResponseDTO) {
         with(binding) {
             pokemonName.text = pokemon.name
 //            pokemonType1.text = pokemon.types[0].toString()

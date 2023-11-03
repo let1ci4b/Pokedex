@@ -1,14 +1,13 @@
 package com.example.pokedex.main.main
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokedex.databinding.CardPokemonBinding
-import com.example.pokedex.main.model.PokemonResponse
+import com.example.pokedex.main.dto.PokemonResponseDTO
 
 class RecyclerViewAdapter(
-    private var pokemonList: MutableList<PokemonResponse>,
+    private var pokemonList: MutableList<PokemonResponseDTO>,
 ) : RecyclerView.Adapter<RecyclerViewViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerViewViewHolder {

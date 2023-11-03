@@ -2,11 +2,13 @@ package com.example.pokedex.main.main
 
 import android.os.Bundle
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pokedex.databinding.MainLayoutBinding
 import com.example.pokedex.main.pokemonData.PokemonMutableList
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: MainLayoutBinding
@@ -19,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = MainLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        binding.recyclerView.requestFocus()
         getPokemons()
         setupRecyclerView()
     }

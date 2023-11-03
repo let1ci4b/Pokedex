@@ -1,7 +1,7 @@
 package com.example.pokedex.main.pokemonData
 
-import com.example.pokedex.main.model.PokemonResponse
+import com.example.pokedex.main.dto.PokemonResponseDTO
 
 object PokemonMutableList {
-    val pokemonData : MutableList<PokemonResponse> = mutableListOf<PokemonResponse>()
+    val pokemonData : MutableList<PokemonResponseDTO> = mutableListOf<PokemonResponseDTO>()
 }
