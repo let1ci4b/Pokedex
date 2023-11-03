@@ -129,7 +129,7 @@
         android:background="@drawable/recycler_background"
         android:layout_margin="5dp"
         android:paddingVertical="15dp"
-        android:paddingHorizontal="10dp"
+        android:paddingHorizontal="7dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
