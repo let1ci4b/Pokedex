@@ -21,4 +21,9 @@ class RecyclerViewAdapter(
 
     override fun getItemCount() = pokemonList.size
 
+    fun filterList(filterlist: ArrayList<PokemonResponseDTO>) {
+        pokemonList = filterlist
+        notifyDataSetChanged()
+    }
+
 }

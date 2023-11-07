@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName // Retrofit recurse to indicat
 
 data class PokemonResponseDTO(
     @SerializedName("id")
-    var id : Int? = null,
+    var id : Int,
     @SerializedName("name")
-    val name: String?,
+    val name: String,
     @SerializedName("height")
     val height: Int?,
     @SerializedName("weight")

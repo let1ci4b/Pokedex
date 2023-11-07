@@ -2,12 +2,16 @@ package com.example.pokedex.main.main
 
 import android.os.Bundle
 import android.util.Log
-import android.view.inputmethod.InputMethodManager
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.children
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pokedex.databinding.MainLayoutBinding
 import com.example.pokedex.main.pokemonData.PokemonMutableList
+import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil
 
 
 class MainActivity : AppCompatActivity() {
@@ -17,14 +21,46 @@ class MainActivity : AppCompatActivity() {
 
     // TODO use layer list or gradient to implement inner shadow
     // TODO implement load on activity create
+    /// TODO implement pagination
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = MainLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.recyclerView.requestFocus()
-        getPokemons()
+        if(PokemonMutableList.pokemonData.isEmpty()) getPokemons()
         setupRecyclerView()
+        setupListeners(null)
     }
+
+    private var isSearchModeOn : Boolean = false
+        set(value) {
+            with(binding) {
+                if(value) exitSearchIcon.visibility = View.VISIBLE
+                else {
+                    exitSearchIcon.visibility = View.GONE
+                    recyclerView.requestFocus()
+                    UIUtil.hideKeyboard(this@MainActivity, searchViewQuery)
+                }
+                field = value
+            }
+        }
+
+    private fun setupListeners(view: View?) {
+        with(binding) {
+            searchViewQuery.doOnTextChanged { text, start, before, count ->
+                if (!viewModel.filterPokemonList(searchViewQuery.text.toString(), recyclerViewAdapter)) {
+                    Toast.makeText(this@MainActivity, "Sem resultados.", Toast.LENGTH_SHORT).show()
+                }
+            }
+//            view.let { view?.setOnClickListener {
+//                    searchBar.children.forEach { childView ->
+//                        childView.setOnClickListener { isSearchModeOn = childView != exitSearchIcon }
+//                    }
+//                }
+//            }
+        }
+    }
+
 
     private fun getPokemons() {
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]

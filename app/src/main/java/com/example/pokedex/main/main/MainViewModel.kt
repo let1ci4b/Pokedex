@@ -32,4 +32,24 @@ class MainViewModel : ViewModel() {
             }
         }
     }
+
+    fun filterPokemonList(query: String?, recyclerViewAdapter: RecyclerViewAdapter) : Boolean {
+        val filteredlist: ArrayList<PokemonResponseDTO> = ArrayList()
+
+        try {
+            PokemonMutableList.pokemonData.forEach { item ->
+                if (item.name.contains(query!!, ignoreCase = true) || item.id.toString().contains(query)) {
+                    filteredlist.add(item)
+                }
+            }
+        } catch (Exception: Exception) {
+            return true
+        }
+
+        return if(filteredlist.isEmpty() && !query?.isEmpty()!!) false
+        else {
+            recyclerViewAdapter.filterList(filteredlist)
+            true
+        }
+    }
 }
