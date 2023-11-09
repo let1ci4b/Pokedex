@@ -14,17 +14,17 @@ class PokemonDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = PokemonDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        position = intent.extras?.getInt("POKEMON")
-        position?.let { bindPokemonDetails(PokemonMutableList.pokemonData[it]) }
+//        position = intent.extras?.getInt("POKEMON")
+//        position?.let { bindPokemonDetails(PokemonMutableList.pokemonData[it]) }
     }
 
     private fun bindPokemonDetails(pokemon : PokemonResponseDTO) {
-        with(binding) {
-            pokemonName.text = pokemon.name
-//            pokemonType1.text = pokemon.types[0].toString()
-            pokemonWeight.text = pokemon.weight.toString()
-            pokemonHeight.text = pokemon.height.toString()
-            //pokemonMove1.text = pokemon.moves[0].toString()
-        }
+//        with(binding) {
+//            pokemonName.text = pokemon.name
+////            pokemonType1.text = pokemon.types[0].toString()
+//            pokemonWeight.text = pokemon.weight.toString()
+//            pokemonHeight.text = pokemon.height.toString()
+//            //pokemonMove1.text = pokemon.moves[0].toString()
+//        }
     }
 }

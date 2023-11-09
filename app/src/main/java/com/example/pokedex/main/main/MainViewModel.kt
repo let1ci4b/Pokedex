@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pokedex.main.api.PokemonRepository
 import com.example.pokedex.main.dto.PokemonResponseDTO
-import com.example.pokedex.main.pokemonData.PokemonMutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -17,18 +16,20 @@ private const val MAX_POKEMON_ID = 151
 class MainViewModel : ViewModel() {
     private val repository = PokemonRepository()
     private val _pokemon = MutableLiveData<List<PokemonResponseDTO>>()
-    val pokemon: LiveData<List<PokemonResponseDTO>>
-        get() = _pokemon
+    val pokemon: LiveData<List<PokemonResponseDTO>> = _pokemon
+
+    var pokemonData : MutableList<PokemonResponseDTO> = mutableListOf()
+        private set
+
 
     fun getPokemon() {
         viewModelScope.launch(Dispatchers.IO) {
 
             for (i in MIN_POKEMON_ID..MAX_POKEMON_ID) {
-                PokemonMutableList.pokemonData.add(repository.getSinglePokemon(i))
-            }
-
-            withContext(Dispatchers.Main) {
-                _pokemon.postValue(PokemonMutableList.pokemonData.toList())
+                pokemonData.add(repository.getSinglePokemon(i))
+                withContext(Dispatchers.Main) {
+                    _pokemon.value = _pokemon.value.orEmpty() + repository.getSinglePokemon(i)
+                }
             }
         }
     }
@@ -37,7 +38,7 @@ class MainViewModel : ViewModel() {
         val filteredlist: ArrayList<PokemonResponseDTO> = ArrayList()
 
         try {
-            PokemonMutableList.pokemonData.forEach { item ->
+            pokemonData.forEach { item ->
                 if (item.name.contains(query!!, ignoreCase = true) || item.id.toString().contains(query)) {
                     filteredlist.add(item)
                 }
