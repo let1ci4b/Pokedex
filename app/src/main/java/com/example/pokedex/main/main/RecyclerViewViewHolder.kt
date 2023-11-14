@@ -21,14 +21,14 @@ class RecyclerViewViewHolder(private var binding: CardPokemonBinding) : Recycler
             pokemonName.text = pokemon.name
             pokemonCode.text = completeId.plus(pokemon.id.toString())
         }
-        setupListeners(pokemon.id)
+        setupListeners(pokemon)
     }
 
-    private fun setupListeners(id: Int?) {
+    private fun setupListeners(pokemon : PokemonResponseDTO) {
         with(binding) {
             pokemonCardBackground.setOnClickListener {
                 val intent = Intent(it.context, PokemonDetailsActivity::class.java)
-                intent.putExtra("POKEMON", id)
+                intent.putExtra("POKEMON", pokemon)
                 it.context.startActivity(intent)
             }
         }

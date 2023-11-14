@@ -1,10 +1,9 @@
 package com.example.pokedex.main.dto
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-data class SlotTypeDTO(
-    @SerializedName("slot")
-    val slot: Int?,
+data class TypesDTO(
     @SerializedName("type")
-    val type: String?
-)
+    val type: TypeDTO
+) : Serializable
