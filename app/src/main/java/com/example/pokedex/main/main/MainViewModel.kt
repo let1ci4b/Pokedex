@@ -15,20 +15,20 @@ private const val MAX_POKEMON_ID = 151
 
 class MainViewModel : ViewModel() {
     private val repository = PokemonRepository()
-    private val _pokemon = MutableLiveData<List<PokemonResponseDTO>>()
-    val pokemon: LiveData<List<PokemonResponseDTO>> = _pokemon
+    private val _pokemon = MutableLiveData<PokemonResponseDTO>()
+    val pokemon: LiveData<PokemonResponseDTO> = _pokemon
 
     var pokemonData : MutableList<PokemonResponseDTO> = mutableListOf()
         private set
 
-
     fun getPokemon() {
         viewModelScope.launch(Dispatchers.IO) {
-
             for (i in MIN_POKEMON_ID..MAX_POKEMON_ID) {
-                pokemonData.add(repository.getSinglePokemon(i))
+                val pokemon = repository.getSinglePokemon(i)
+                pokemonData.add(pokemon)
+
                 withContext(Dispatchers.Main) {
-                    _pokemon.value = _pokemon.value.orEmpty() + repository.getSinglePokemon(i)
+                    _pokemon.value = pokemon
                 }
             }
         }

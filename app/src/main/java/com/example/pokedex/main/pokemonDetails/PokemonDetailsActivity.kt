@@ -3,10 +3,12 @@ package com.example.pokedex.main.pokemonDetails
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import com.bumptech.glide.Glide
 import com.example.pokedex.R
 import com.example.pokedex.databinding.PokemonDetailsBinding
 import com.example.pokedex.main.dto.PokemonResponseDTO
@@ -18,24 +20,43 @@ class PokemonDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = PokemonDetailsBinding.inflate(layoutInflater)
+
+        Log.i("POKEMON", "Entrou na details")
+
         setContentView(binding.root)
         pokemon = intent.getSerializableExtra("POKEMON") as PokemonResponseDTO
         pokemon?.let { bindPokemonDetails(pokemon!!) }
     }
 
+    var completeId : String? =
+        when(pokemon?.id.toString().length) {
+            1 -> "#00"
+            2 -> "#0"
+            else -> "#"
+        }
+
     private fun bindPokemonDetails(pokemon : PokemonResponseDTO) {
         with(binding) {
-            pokemonDetails.setBackgroundColor(resources.getColor(getColorResource()))
+            Glide.with(applicationContext).load(pokemon.sprites.other.officialArtwork.frontDefault).into(binding.pokemonImage)
             pokemonName.text = pokemon.name
             pokemonType1.text = pokemon.types[0].type.name
+            pokemonId.text = completeId.plus(pokemon.id.toString())
             if(pokemon.types.size > 1) pokemonType2.text = pokemon.types[1].type.name
             else pokemonType2.visibility = View.GONE
-            pokemonWeight.text = pokemon.weight.toString().plus(" kg")
-            pokemonHeight.text = pokemon.height.toString().plus(" m")
+            pokemonWeight.text = convertPokemonMeasures(pokemon.weight).plus(" kg")
+            pokemonHeight.text = convertPokemonMeasures(pokemon.height).plus(" m")
             pokemonMove1.text = pokemon.abilities[0].ability.name
             if(pokemon.abilities.size > 1) pokemonMove2.text = pokemon.abilities[1].ability.name
             else pokemonMove2.visibility = View.GONE
+
+            pokemonDetails.setBackgroundColor(resources.getColor(getColorResource()))
+//            pokemonType1.setBackgroundColor(resources.getColor(getColorResource()))
+//            pokemonType2.setBackgroundColor(resources.getColor(getColorResource()))
         }
+    }
+
+    private fun convertPokemonMeasures(measure: Int?) : String {
+       return measure?.toFloat()?.div(10).toString()
     }
 
     private fun getColorResource() : Int {

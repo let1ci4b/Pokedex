@@ -17,27 +17,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: MainLayoutBinding
     private lateinit var recyclerViewAdapter: RecyclerViewAdapter
     private var viewModel: MainViewModel = MainViewModel()
-
-    // TODO use layer list or gradient to implement inner shadow
-    // TODO implement load on activity create
-    /// TODO implement pagination
-    /// TODO fix recyclerview cards loading interruption
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = MainLayoutBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        binding.recyclerView.requestFocus()
-        if(viewModel.pokemonData.isEmpty()) getPokemons()
-        setupRecyclerView()
-        setupListeners(null)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        isSearchModeOn = false
-    }
-
     private var isSearchModeOn : Boolean = false
         set(value) {
             with(binding) {
@@ -45,12 +24,37 @@ class MainActivity : AppCompatActivity() {
                 else {
                     exitSearchIcon.visibility = View.GONE
                     recyclerView.requestFocus()
+                    Log.i("POKEMON", "Entrou na foco recycle")
                     UIUtil.hideKeyboard(this@MainActivity, searchViewQuery)
                     searchViewQuery.setText("")
                 }
                 field = value
             }
         }
+
+    // TODO use layer list or gradient to implement inner shadow
+    // TODO implement load on activity create
+    /// TODO implement pagination
+    /// TODO fix recyclerview cards loading interruption
+    /// TODO replace searchbar with text input edittext to deal with focus bug
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = MainLayoutBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setupViewModel()
+        setupObserve()
+        setupRecyclerView()
+        setupListeners(null)
+        setupPokemonList()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.i("POKEMON", "Entrou na main pause")
+        isSearchModeOn = false
+    }
+
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setupListeners(view: View?) {
@@ -61,6 +65,7 @@ class MainActivity : AppCompatActivity() {
             /// TODO replace no results warning to handle with loading pokemons
             searchViewQuery.doOnTextChanged { text, start, before, count ->
                 if (!viewModel.filterPokemonList(searchViewQuery.text.toString(), recyclerViewAdapter)) {
+                    Log.i("POKEMON", "Entrou na details")
                     Toast.makeText(this@MainActivity, "Sem resultados.", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -70,15 +75,18 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun getPokemons() {
+    private fun setupViewModel() {
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        viewModel.getPokemon()
+    }
 
-        viewModel.pokemon.observe(this@MainActivity) { pokedex ->
-            pokedex.forEach { pokemon ->
-                Log.i("POKEMON", "${pokemon.name}")
-                recyclerViewAdapter.notifyDataSetChanged()
-            }
+    private fun setupPokemonList() {
+        if(viewModel.pokemonData.isEmpty()) viewModel.getPokemon()
+    }
+
+    private fun setupObserve() {
+        viewModel.pokemon.observe(this@MainActivity) { pokemon ->
+            Log.i("POKEMON", "${pokemon.name}")
+            recyclerViewAdapter.notifyItemInserted(viewModel.pokemonData.indexOf(pokemon))
         }
     }
 
@@ -87,7 +95,6 @@ class MainActivity : AppCompatActivity() {
         var gridlayout = GridLayoutManager(this, 3)
         binding.recyclerView.apply {
             setHasFixedSize(false)
-
             adapter = recyclerViewAdapter
             layoutManager = gridlayout
         }

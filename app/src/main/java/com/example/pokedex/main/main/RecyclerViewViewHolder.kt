@@ -26,7 +26,7 @@ class RecyclerViewViewHolder(private var binding: CardPokemonBinding) : Recycler
 
     private fun setupListeners(pokemon : PokemonResponseDTO) {
         with(binding) {
-            pokemonCardBackground.setOnClickListener {
+            root.setOnClickListener {
                 val intent = Intent(it.context, PokemonDetailsActivity::class.java)
                 intent.putExtra("POKEMON", pokemon)
                 it.context.startActivity(intent)
