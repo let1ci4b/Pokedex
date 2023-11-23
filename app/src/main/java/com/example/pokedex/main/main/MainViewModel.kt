@@ -22,14 +22,18 @@ class MainViewModel : ViewModel() {
         private set
 
     fun getPokemon() {
-        viewModelScope.launch(Dispatchers.IO) {
-            for (i in MIN_POKEMON_ID..MAX_POKEMON_ID) {
-                val pokemon = repository.getSinglePokemon(i)
-                pokemonData.add(pokemon)
+        viewModelScope.launch() {
+            try {
+                for (i in MIN_POKEMON_ID..MAX_POKEMON_ID) {
+                    val pokemon = repository.getSinglePokemon(i)
+                    pokemonData.add(pokemon)
 
-                withContext(Dispatchers.Main) {
-                    _pokemon.value = pokemon
+                    withContext(Dispatchers.Main) {
+                        _pokemon.value = pokemon
+                    }
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }

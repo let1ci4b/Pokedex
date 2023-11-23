@@ -91,12 +91,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        recyclerViewAdapter = RecyclerViewAdapter(viewModel.pokemonData)
-        var gridlayout = GridLayoutManager(this, 3)
-        binding.recyclerView.apply {
-            setHasFixedSize(false)
-            adapter = recyclerViewAdapter
-            layoutManager = gridlayout
+        with(binding) {
+            recyclerViewAdapter = RecyclerViewAdapter(viewModel.pokemonData)
+            var gridlayout = GridLayoutManager(this@MainActivity, 3)
+            binding.recyclerView.apply {
+                setHasFixedSize(false)
+                adapter = recyclerViewAdapter
+                layoutManager = gridlayout
+            }
+            recyclerView.requestFocus()
         }
     }
 }
