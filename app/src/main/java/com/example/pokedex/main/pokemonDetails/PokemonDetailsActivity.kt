@@ -2,14 +2,10 @@ package com.example.pokedex.main.pokemonDetails
 
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.graphics.drawable.DrawableCompat
 import com.bumptech.glide.Glide
 import com.example.pokedex.R
 import com.example.pokedex.databinding.PokemonDetailsBinding
@@ -17,7 +13,16 @@ import com.example.pokedex.main.dto.PokemonResponseDTO
 
 class PokemonDetailsActivity : AppCompatActivity() {
     private lateinit var binding: PokemonDetailsBinding
-    private var pokemon: PokemonResponseDTO? = null
+    private var pokemonsList: ArrayList<PokemonResponseDTO>? = null
+    private var position: Int = 0
+    private val imagesList = ArrayList<String>()
+    private var atualIndex = 0
+    private enum class Arrow {
+        RIGHT, LEFT
+    }
+
+    /// TODO refactor activity using ViewModel class
+    /// TODO fix visibility bug (types and abilities)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,21 +31,36 @@ class PokemonDetailsActivity : AppCompatActivity() {
         Log.i("POKEMON", "Entrou na details")
 
         setContentView(binding.root)
-        pokemon = intent.getSerializableExtra("POKEMON") as PokemonResponseDTO
-        pokemon?.let { bindPokemonDetails(pokemon!!) }
-        setupImagesCarousel()
+        val args : Bundle? = intent.getBundleExtra("BUNDLE")
+        pokemonsList = args?.get("POKEMONSLIST") as ArrayList<PokemonResponseDTO>?
+        position = intent.getIntExtra("POKEMON", 0)
+        pokemonsList?.let { bindPokemonDetails(pokemonsList!![position]) }
+        setupOnClickListeners()
     }
 
-    var completeId : String? =
-        when(pokemon?.id.toString().length) {
-            1 -> "#00"
-            2 -> "#0"
-            else -> "#"
+    private fun setupOnClickListeners() {
+        with(binding){
+            iconBack.setOnClickListener { finish() }
+            arrowRight.setOnClickListener {
+                setupCarousel(Arrow.RIGHT)
+            }
+            arrowLeft.setOnClickListener {
+                setupCarousel(Arrow.LEFT)
+            }
         }
+    }
 
     private fun bindPokemonDetails(pokemon : PokemonResponseDTO) {
+        var completeId : String? =
+            when(pokemon?.id.toString().length) {
+                1 -> "#00"
+                2 -> "#0"
+                else -> "#"
+            }
         with(binding) {
-            //Glide.with(applicationContext).load(pokemon.sprites.other.officialArtwork.frontDefault).into(binding.pokemonImage)
+            if (pokemonsList?.first() == pokemon) arrowLeft.visibility = View.GONE
+            if (pokemonsList?.lastIndex == position) arrowRight.visibility = View.GONE
+            Glide.with(applicationContext).load(pokemon.sprites.other.officialArtwork.frontDefault).into(pokemonImage)
             pokemonName.text = pokemon.name
             pokemonType1.text = pokemon.types[0].type.name
             pokemonId.text = completeId.plus(pokemon.id.toString())
@@ -54,43 +74,28 @@ class PokemonDetailsActivity : AppCompatActivity() {
             pokemonMove1.text = pokemon.abilities[0].ability.name
             if(pokemon.abilities.size > 1) pokemonMove2.text = pokemon.abilities[1].ability.name
             else pokemonMove2.visibility = View.GONE
-
             pokemonType1.background.setColorFilter(Color.parseColor(getString(getColorResource(pokemon?.types?.get(0)?.type?.name.toString()))), PorterDuff.Mode.SRC_OVER)
-
             pokemonDetails.setBackgroundColor(resources.getColor(getColorResource(pokemon?.types?.get(0)?.type?.name.toString())))
             titleAbout.setTextColor(resources.getColor(getColorResource(pokemon?.types?.get(0)?.type?.name.toString())))
             titleStatsLayout.setTextColor(resources.getColor(getColorResource(pokemon?.types?.get(0)?.type?.name.toString())))
         }
     }
 
-    private fun setupImagesCarousel() {
-        val imagesList = listOf<String>(
-            pokemon?.sprites?.other?.officialArtwork?.frontDefault.toString(),
-            pokemon?.sprites?.backDefault.toString(),
-            pokemon?.sprites?.backFemale.toString(),
-            pokemon?.sprites?.backShiny.toString(),
-            pokemon?.sprites?.backShinyFemale.toString(),
-            pokemon?.sprites?.frontDefault.toString(),
-            pokemon?.sprites?.frontFemale.toString(),
-            pokemon?.sprites?.frontShiny.toString(),
-            pokemon?.sprites?.frontShinyFemale.toString()
-        )
-//        with(binding) {
-//            setupImage(imagesList[0],binding.pokemonImage)
-//            var atualIndex = 0
-//            arrowRight.setOnClickListener {
-//                atualIndex += 1
-//                if(imagesList[atualIndex].isNotBlank()) setupImage(imagesList[atualIndex],binding.pokemonImage)
-//            }
-//            arrowRight.setOnClickListener {
-//                atualIndex -= 1
-//                if(imagesList[atualIndex].isNotBlank()) setupImage(imagesList[atualIndex],binding.pokemonImage)
-//            }
-//        }
-    }
+    private fun setupCarousel(arrow: Arrow) {
+        with(binding) {
+            when (arrow) {
+                Arrow.RIGHT -> {
+                    binding.arrowLeft.visibility = View.VISIBLE
+                    position++
+                }
 
-    private fun setupImage(url: String?, image: ImageView) {
-        url.let { Glide.with(applicationContext).load(it).into(image) }
+                Arrow.LEFT -> {
+                    binding.arrowRight.visibility = View.VISIBLE
+                    position--
+                }
+            }
+            bindPokemonDetails(pokemonsList!![position])
+        }
     }
 
     private fun convertPokemonMeasures(measure: Int?) : String {
