@@ -1,6 +1,7 @@
 package com.example.pokedex.main.main
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,10 +11,12 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pokedex.databinding.MainLayoutBinding
+import com.example.pokedex.main.dto.PokemonResponseDTO
+import com.example.pokedex.main.pokemonDetails.PokemonDetailsActivity
 import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), RecyclerViewInterface {
     private lateinit var binding: MainLayoutBinding
     private lateinit var recyclerViewAdapter: RecyclerViewAdapter
     private var viewModel: MainViewModel = MainViewModel()
@@ -34,16 +37,16 @@ class MainActivity : AppCompatActivity() {
 
     // TODO use layer list or gradient to implement inner shadow
     // TODO implement load on activity create
-    /// TODO implement pagination
     /// TODO fix recyclerview cards loading interruption
     /// TODO replace searchbar with text input edittext to deal with focus bug
+    /// TODO replace hardcoded strings
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = MainLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupViewModel()
-        setupObserve()
+        setupObservers()
         setupRecyclerView()
         setupListeners(null)
         setupPokemonList()
@@ -54,7 +57,6 @@ class MainActivity : AppCompatActivity() {
         Log.i("POKEMON", "Entrou na main pause")
         isSearchModeOn = false
     }
-
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setupListeners(view: View?) {
@@ -80,19 +82,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupPokemonList() {
-        if(viewModel.pokemonData.isEmpty()) viewModel.getPokemon()
+        viewModel.getPokemon()
     }
 
-    private fun setupObserve() {
+    private fun setupObservers() {
         viewModel.pokemon.observe(this@MainActivity) { pokemon ->
-            Log.i("POKEMON", "${pokemon.name}")
-            recyclerViewAdapter.notifyItemInserted(viewModel.pokemonData.indexOf(pokemon))
+            recyclerViewAdapter.addPokemon(pokemon)
         }
     }
 
     private fun setupRecyclerView() {
         with(binding) {
-            recyclerViewAdapter = RecyclerViewAdapter(viewModel.pokemonData)
+            recyclerViewAdapter = RecyclerViewAdapter(recyclerView, this@MainActivity)
             var gridlayout = GridLayoutManager(this@MainActivity, 3)
             binding.recyclerView.apply {
                 setHasFixedSize(false)
@@ -101,5 +102,14 @@ class MainActivity : AppCompatActivity() {
             }
             recyclerView.requestFocus()
         }
+    }
+
+    override fun onPokemonClicked(pokemon: PokemonResponseDTO) {
+        val intent = Intent(this, PokemonDetailsActivity::class.java)
+        val args = Bundle()
+        args.putSerializable("POKEMONSLIST", viewModel.pokemonData as ArrayList)
+        intent.putExtra("BUNDLE", args)
+        intent.putExtra("POKEMON", pokemon.id-1)
+        startActivity(intent)
     }
 }

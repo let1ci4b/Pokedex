@@ -15,8 +15,6 @@ class PokemonDetailsActivity : AppCompatActivity() {
     private lateinit var binding: PokemonDetailsBinding
     private var pokemonsList: ArrayList<PokemonResponseDTO>? = null
     private var position: Int = 0
-    private val imagesList = ArrayList<String>()
-    private var atualIndex = 0
     private enum class Arrow {
         RIGHT, LEFT
     }
@@ -94,6 +92,8 @@ class PokemonDetailsActivity : AppCompatActivity() {
                     position--
                 }
             }
+            pokemonMove2.visibility = View.VISIBLE
+            pokemonType2.visibility = View.VISIBLE
             bindPokemonDetails(pokemonsList!![position])
         }
     }

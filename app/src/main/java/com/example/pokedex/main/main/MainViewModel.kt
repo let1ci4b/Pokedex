@@ -17,7 +17,6 @@ class MainViewModel : ViewModel() {
     private val repository = PokemonRepository()
     private val _pokemon = MutableLiveData<PokemonResponseDTO>()
     val pokemon: LiveData<PokemonResponseDTO> = _pokemon
-
     var pokemonData : MutableList<PokemonResponseDTO> = mutableListOf()
         private set
 
