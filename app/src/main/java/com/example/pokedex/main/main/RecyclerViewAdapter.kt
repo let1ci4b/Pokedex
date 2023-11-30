@@ -6,13 +6,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokedex.databinding.CardPokemonBinding
+import com.example.pokedex.main.database.AppDatabase
 import com.example.pokedex.main.dto.PokemonResponseDTO
+import com.example.pokedex.main.model.Database
 
 class RecyclerViewAdapter(
     private val recyclerView: RecyclerView,
-    private val listener: RecyclerViewInterface,
+    private val listener: RecyclerViewInterface
 ) : RecyclerView.Adapter<RecyclerViewViewHolder>() {
 
+
+    private val db : AppDatabase = Database.database
     private var pokemonList: MutableList<PokemonResponseDTO> = mutableListOf()
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerViewViewHolder {
@@ -21,14 +25,14 @@ class RecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerViewViewHolder, position: Int) {
-        holder.bind(pokemonList[position], listener)
+        holder.bind(db.pokemonDAO().getPokemonById(position), listener)
     }
 
     override fun getItemCount() = pokemonList.size
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addPokemon(pokemon: PokemonResponseDTO) {
-        pokemonList.add(pokemon)
+    fun addPokemon(pokemonId: Int) {
+        pokemonList.add(db.pokemonDAO().getPokemonById(pokemonId))
         pokemonList.sortedBy { it.id }
         notifyDataSetChanged()
         recyclerView.scrollToPosition(pokemonList.lastIndex)

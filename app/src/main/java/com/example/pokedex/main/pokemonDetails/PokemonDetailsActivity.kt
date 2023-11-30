@@ -9,18 +9,22 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.pokedex.R
 import com.example.pokedex.databinding.PokemonDetailsBinding
+import com.example.pokedex.main.database.AppDatabase
 import com.example.pokedex.main.dto.PokemonResponseDTO
+import com.example.pokedex.main.model.Database
 
 class PokemonDetailsActivity : AppCompatActivity() {
     private lateinit var binding: PokemonDetailsBinding
-    private var pokemonsList: ArrayList<PokemonResponseDTO>? = null
-    private var position: Int = 0
+    private var pokemonNumber: Int = 0
+    private var db : AppDatabase = Database.database
+    private var pokemonsList: List<PokemonResponseDTO>? = db.pokemonDAO().getAll()
     private enum class Arrow {
         RIGHT, LEFT
     }
 
     /// TODO refactor activity using ViewModel class
     /// TODO fix visibility bug (types and abilities)
+    /// TODO replace logic to work with single pokemons
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,10 +33,10 @@ class PokemonDetailsActivity : AppCompatActivity() {
         Log.i("POKEMON", "Entrou na details")
 
         setContentView(binding.root)
-        val args : Bundle? = intent.getBundleExtra("BUNDLE")
-        pokemonsList = args?.get("POKEMONSLIST") as ArrayList<PokemonResponseDTO>?
-        position = intent.getIntExtra("POKEMON", 0)
-        pokemonsList?.let { bindPokemonDetails(pokemonsList!![position]) }
+//        val args : Bundle? = intent.getBundleExtra("BUNDLE")
+//        pokemonsList = args?.get("POKEMONSLIST") as ArrayList<PokemonResponseDTO>?
+        pokemonNumber = intent.getIntExtra("POKEMON", 0)
+        pokemonsList?.let { bindPokemonDetails(pokemonsList!![pokemonNumber]) }
         setupOnClickListeners()
     }
 
@@ -57,7 +61,7 @@ class PokemonDetailsActivity : AppCompatActivity() {
             }
         with(binding) {
             if (pokemonsList?.first() == pokemon) arrowLeft.visibility = View.GONE
-            if (pokemonsList?.lastIndex == position) arrowRight.visibility = View.GONE
+            if (pokemonsList?.lastIndex == pokemon.id) arrowRight.visibility = View.GONE
             Glide.with(applicationContext).load(pokemon.sprites.other.officialArtwork.frontDefault).into(pokemonImage)
             pokemonName.text = pokemon.name
             pokemonType1.text = pokemon.types[0].type.name
@@ -84,17 +88,17 @@ class PokemonDetailsActivity : AppCompatActivity() {
             when (arrow) {
                 Arrow.RIGHT -> {
                     binding.arrowLeft.visibility = View.VISIBLE
-                    position++
+                    pokemonNumber++
                 }
 
                 Arrow.LEFT -> {
                     binding.arrowRight.visibility = View.VISIBLE
-                    position--
+                    pokemonNumber--
                 }
             }
             pokemonMove2.visibility = View.VISIBLE
             pokemonType2.visibility = View.VISIBLE
-            bindPokemonDetails(pokemonsList!![position])
+            bindPokemonDetails(pokemonsList!![pokemonNumber])
         }
     }
 

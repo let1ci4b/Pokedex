@@ -20,6 +20,6 @@ data class SpritesDTO(
 //    val frontShiny : String?,
 //    @SerializedName("front_shiny_female")
 //    val frontShinyFemale : String?,
-//    @SerializedName("other")
+    @SerializedName("other")
     val other: OtherDTO
 ) : Serializable

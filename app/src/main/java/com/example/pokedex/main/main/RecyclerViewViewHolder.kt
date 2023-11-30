@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.pokedex.databinding.CardPokemonBinding
 import com.example.pokedex.main.dto.PokemonResponseDTO
+import com.example.pokedex.main.model.Database
 import com.example.pokedex.main.pokemonDetails.PokemonDetailsActivity
 import java.text.FieldPosition
 
@@ -23,10 +24,10 @@ class RecyclerViewViewHolder(private var binding: CardPokemonBinding) : Recycler
             pokemonName.text = pokemon.name
             pokemonCode.text = completeId.plus(pokemon.id.toString())
         }
-        setupListeners(pokemon, listener)
+        setupListeners(pokemon.id, listener)
     }
 
-    private fun setupListeners(pokemon: PokemonResponseDTO, listener: RecyclerViewInterface) {
+    private fun setupListeners(pokemon: Int, listener: RecyclerViewInterface) {
         binding.root.setOnClickListener {
             listener.onPokemonClicked(pokemon)
         }

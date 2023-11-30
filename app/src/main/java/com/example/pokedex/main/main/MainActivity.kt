@@ -10,7 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.room.Room
 import com.example.pokedex.databinding.MainLayoutBinding
+import com.example.pokedex.main.database.AppDatabase
 import com.example.pokedex.main.dto.PokemonResponseDTO
 import com.example.pokedex.main.pokemonDetails.PokemonDetailsActivity
 import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil
@@ -19,7 +21,7 @@ import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil
 class MainActivity : AppCompatActivity(), RecyclerViewInterface {
     private lateinit var binding: MainLayoutBinding
     private lateinit var recyclerViewAdapter: RecyclerViewAdapter
-    private var viewModel: MainViewModel = MainViewModel()
+
     private var isSearchModeOn : Boolean = false
         set(value) {
             with(binding) {
@@ -34,6 +36,8 @@ class MainActivity : AppCompatActivity(), RecyclerViewInterface {
                 field = value
             }
         }
+
+    private var viewModel: MainViewModel = MainViewModel()
 
     // TODO use layer list or gradient to implement inner shadow
     // TODO implement load on activity create
@@ -87,7 +91,7 @@ class MainActivity : AppCompatActivity(), RecyclerViewInterface {
 
     private fun setupObservers() {
         viewModel.pokemon.observe(this@MainActivity) { pokemon ->
-            recyclerViewAdapter.addPokemon(pokemon)
+            recyclerViewAdapter.addPokemon(pokemon.id)
         }
     }
 
@@ -104,12 +108,12 @@ class MainActivity : AppCompatActivity(), RecyclerViewInterface {
         }
     }
 
-    override fun onPokemonClicked(pokemon: PokemonResponseDTO) {
+    override fun onPokemonClicked(pokemonId: Int) {
         val intent = Intent(this, PokemonDetailsActivity::class.java)
-        val args = Bundle()
-        args.putSerializable("POKEMONSLIST", viewModel.pokemonData as ArrayList)
-        intent.putExtra("BUNDLE", args)
-        intent.putExtra("POKEMON", pokemon.id-1)
+//        val args = Bundle()
+//        args.putSerializable("POKEMONSLIST", viewModel.pokemonData as ArrayList)
+//        intent.putExtra("BUNDLE", args)
+        intent.putExtra("POKEMON", pokemonId)
         startActivity(intent)
     }
 }

@@ -5,5 +5,5 @@ import java.io.Serializable
 
 data class OfficialArtworkDTO(
     @SerializedName("front_default")
-    val frontDefault: String?
+    val frontDefault: String
 ) : Serializable
