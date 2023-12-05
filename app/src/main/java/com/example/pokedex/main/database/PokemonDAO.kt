@@ -1,17 +1,18 @@
 package com.example.pokedex.main.database
 
+import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.pokedex.main.dto.PokemonResponseDTO
 
+@Dao
 interface PokemonDAO {
-    @Query("SELECT * FROM pokemonresponsedto")
-    fun getAll(): List<PokemonResponseDTO>
+    @Query("SELECT * FROM pokemonentity")
+    fun getAll(): List<PokemonEntity>
 
-    @Query("SELECT * FROM pokemonresponsedto WHERE id LIKE :pokemonID")
-    fun getPokemonById(pokemonID: Int): PokemonResponseDTO
+    @Query("SELECT * FROM pokemonentity WHERE id LIKE :pokemonID")
+    fun getPokemonById(pokemonID: Int): PokemonEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertPokemons(vararg pokemons: PokemonResponseDTO)
+    fun insertPokemons(vararg pokemons: PokemonEntity)
 }

@@ -10,14 +10,14 @@ import com.bumptech.glide.Glide
 import com.example.pokedex.R
 import com.example.pokedex.databinding.PokemonDetailsBinding
 import com.example.pokedex.main.database.AppDatabase
-import com.example.pokedex.main.dto.PokemonResponseDTO
-import com.example.pokedex.main.model.Database
+import com.example.pokedex.main.database.PokemonEntity
+import com.example.pokedex.main.model.DatabaseObject
 
 class PokemonDetailsActivity : AppCompatActivity() {
     private lateinit var binding: PokemonDetailsBinding
     private var pokemonNumber: Int = 0
-    private var db : AppDatabase = Database.database
-    private var pokemonsList: List<PokemonResponseDTO>? = db.pokemonDAO().getAll()
+    private var db : AppDatabase? = DatabaseObject.database
+    private var pokemonsList: List<PokemonEntity>? = db?.pokemonDAO()?.getAll()
     private enum class Arrow {
         RIGHT, LEFT
     }
@@ -52,7 +52,7 @@ class PokemonDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun bindPokemonDetails(pokemon : PokemonResponseDTO) {
+    private fun bindPokemonDetails(pokemon: PokemonEntity) {
         var completeId : String? =
             when(pokemon?.id.toString().length) {
                 1 -> "#00"
@@ -62,24 +62,24 @@ class PokemonDetailsActivity : AppCompatActivity() {
         with(binding) {
             if (pokemonsList?.first() == pokemon) arrowLeft.visibility = View.GONE
             if (pokemonsList?.lastIndex == pokemon.id) arrowRight.visibility = View.GONE
-            Glide.with(applicationContext).load(pokemon.sprites.other.officialArtwork.frontDefault).into(pokemonImage)
+            Glide.with(applicationContext).load(pokemon.sprite).into(pokemonImage)
             pokemonName.text = pokemon.name
-            pokemonType1.text = pokemon.types[0].type.name
+            pokemonType1.text = pokemon.types[0]
             pokemonId.text = completeId.plus(pokemon.id.toString())
             if(pokemon.types.size > 1) {
-                pokemonType2.text = pokemon.types[1].type.name
-                pokemonType2.background.setColorFilter(Color.parseColor(getString(getColorResource(pokemon?.types?.get(1)?.type?.name.toString()))), PorterDuff.Mode.SRC_OVER)
+                pokemonType2.text = pokemon.types[1]
+                pokemonType2.background.setColorFilter(Color.parseColor(getString(getColorResource(pokemon.types[1]))), PorterDuff.Mode.SRC_OVER)
             }
             else pokemonType2.visibility = View.GONE
             pokemonWeight.text = convertPokemonMeasures(pokemon.weight).plus(" kg")
             pokemonHeight.text = convertPokemonMeasures(pokemon.height).plus(" m")
-            pokemonMove1.text = pokemon.abilities[0].ability.name
-            if(pokemon.abilities.size > 1) pokemonMove2.text = pokemon.abilities[1].ability.name
+            pokemonMove1.text = pokemon.abilities[0]
+            if(pokemon.abilities.size > 1) pokemonMove2.text = pokemon.abilities[1]
             else pokemonMove2.visibility = View.GONE
-            pokemonType1.background.setColorFilter(Color.parseColor(getString(getColorResource(pokemon?.types?.get(0)?.type?.name.toString()))), PorterDuff.Mode.SRC_OVER)
-            pokemonDetails.setBackgroundColor(resources.getColor(getColorResource(pokemon?.types?.get(0)?.type?.name.toString())))
-            titleAbout.setTextColor(resources.getColor(getColorResource(pokemon?.types?.get(0)?.type?.name.toString())))
-            titleStatsLayout.setTextColor(resources.getColor(getColorResource(pokemon?.types?.get(0)?.type?.name.toString())))
+            pokemonType1.background.setColorFilter(Color.parseColor(getString(getColorResource(pokemon.types[0]))), PorterDuff.Mode.SRC_OVER)
+            pokemonDetails.setBackgroundColor(resources.getColor(getColorResource(pokemon.types[0])))
+            titleAbout.setTextColor(resources.getColor(getColorResource(pokemon.types[0])))
+            titleStatsLayout.setTextColor(resources.getColor(getColorResource(pokemon.types[0])))
         }
     }
 

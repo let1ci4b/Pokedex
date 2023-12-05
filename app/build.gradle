@@ -41,11 +41,15 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-//        maven { url "https://jitpack.io" }
     }
 }
 
 dependencies {
+
+//    def autobindings_version = "1.1-beta01"
+//
+//    implementation "io.github.kaustubhpatange:autobindings:$autobindings_version"
+//    kapt "io.github.kaustubhpatange:autobindings-compiler:$autobindings_version"
 
     def roomVersion = "2.6.0"
 
