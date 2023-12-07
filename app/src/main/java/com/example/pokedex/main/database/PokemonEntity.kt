@@ -14,4 +14,5 @@ data class PokemonEntity(
     @ColumnInfo ("types") val types: List<String>,
     @ColumnInfo ("abilities") val abilities: List<String>,
     @ColumnInfo("flavor_text") val flavor_text: String?,
+    @ColumnInfo("base_stats") val base_stats: List<Int>
 )

@@ -6,7 +6,7 @@ import com.example.pokedex.databinding.CardPokemonBinding
 import com.example.pokedex.main.database.PokemonEntity
 
 class RecyclerViewViewHolder(private var binding: CardPokemonBinding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(pokemon: PokemonEntity, listener: RecyclerViewInterface) {
+    fun bind(pokemon: PokemonEntity, position: Int, listener: RecyclerViewInterface) {
         val completeId : String =
             when(pokemon.id.toString().length) {
                 1 -> "#00"
@@ -19,12 +19,12 @@ class RecyclerViewViewHolder(private var binding: CardPokemonBinding) : Recycler
             pokemonName.text = pokemon.name
             pokemonCode.text = completeId.plus(pokemon.id.toString())
         }
-        setupListeners(pokemon.id, listener)
+        setupListeners(position, listener)
     }
 
-    private fun setupListeners(pokemon: Int, listener: RecyclerViewInterface) {
+    private fun setupListeners(position: Int, listener: RecyclerViewInterface) {
         binding.root.setOnClickListener {
-            listener.onPokemonClicked(pokemon)
+            listener.onPokemonClicked(position)
         }
     }
 }

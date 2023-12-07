@@ -1,10 +1,13 @@
 package com.example.pokedex.main.main
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.room.Room
@@ -13,7 +16,9 @@ import com.example.pokedex.main.database.AppDatabase
 import com.example.pokedex.main.database.Converter
 import com.example.pokedex.main.model.DatabaseObject
 import com.example.pokedex.main.pokemonDetails.PokemonDetailsActivity
+import kotlinx.coroutines.cancelAndJoin
 import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil
+import java.lang.Exception
 
 
 class MainActivity : AppCompatActivity(), RecyclerViewInterface {
@@ -38,10 +43,9 @@ class MainActivity : AppCompatActivity(), RecyclerViewInterface {
     private lateinit var viewModel: MainViewModel
 
     // TODO use layer list or gradient to implement inner shadow
-    // TODO implement load on activity create
-    /// TODO fix recyclerview cards loading interruption
-    /// TODO replace searchbar with text input edittext to deal with focus bug
+    // TODO fix coroutines flux
     /// TODO replace hardcoded strings
+    /// TODO implements filter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,40 +59,40 @@ class MainActivity : AppCompatActivity(), RecyclerViewInterface {
         setupViewModel()
         setupObservers()
         setupRecyclerView()
-        //        setupListeners(null)
+        setupListeners(null)
         setupPokemonList()
     }
 
     private fun setupDatabase() {
         DatabaseObject.database = Room
-            .databaseBuilder(this, AppDatabase::class.java, "database-name")
+            .databaseBuilder(this, AppDatabase::class.java, "pokedex-database")
             .addTypeConverter(Converter())
             .build()
     }
 
     override fun onPause() {
         super.onPause()
-        Log.i("POKEMON", "Entrou na main pause")
+//        viewModel.jobCoroutine?.cancel(null)
         isSearchModeOn = false
     }
 
-//    @SuppressLint("ClickableViewAccessibility")
-//    private fun setupListeners(view: View?) {
-//        with(binding) {
-//            searchViewQuery.setOnTouchListener { view, motionEvent ->
-//                isSearchModeOn = true
-//                false }
-//            /// TODO replace no results warning to handle with loading pokemons
-//            searchViewQuery.doOnTextChanged { text, start, before, count ->
-//                if (!viewModel.filterPokemonList(searchViewQuery.text.toString(), recyclerViewAdapter)) {
-//                    Log.i("POKEMON", "Entrou na details")
-//                    Toast.makeText(this@MainActivity, "Sem resultados.", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//            searchBar.setOnClickListener { isSearchModeOn = true }
-//            exitSearchIcon.setOnClickListener { isSearchModeOn = false }
-//        }
-//    }
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setupListeners(view: View?) {
+        with(binding) {
+            searchViewQuery.setOnTouchListener { view, motionEvent ->
+                isSearchModeOn = true
+                false }
+            /// TODO replace no results warning to handle with loading pokemons
+            searchViewQuery.doOnTextChanged { text, start, before, count ->
+                if (!viewModel.filterPokemonList(searchViewQuery.text.toString(), recyclerViewAdapter)) {
+                    Log.i("POKEMON", "Entrou na details")
+                    Toast.makeText(this@MainActivity, "Sem resultados.", Toast.LENGTH_SHORT).show()
+                }
+            }
+            searchBar.setOnClickListener { isSearchModeOn = true }
+            exitSearchIcon.setOnClickListener { isSearchModeOn = false }
+        }
+    }
 
 
     private fun setupViewModel() {
@@ -96,15 +100,15 @@ class MainActivity : AppCompatActivity(), RecyclerViewInterface {
     }
 
     private fun setupPokemonList() {
-        viewModel.getPokemon()
+        if (recyclerViewAdapter.needToUpdateList()) viewModel.getPokemon()
     }
 
     private fun setupObservers() {
-        viewModel.pokemon.observe(this@MainActivity) { pokemon ->
+        viewModel.pokemonLiveData.observe(this@MainActivity) { pokemon ->
             recyclerViewAdapter.addPokemon(pokemon)
         }
 
-        viewModel.pokemonCompleteList.observe(this@MainActivity) { pokemonCompleteList ->
+        viewModel.pokemonCompleteListLiveData.observe(this@MainActivity) { pokemonCompleteList ->
             recyclerViewAdapter.addAllPokemons(pokemonCompleteList)
         }
     }
@@ -124,9 +128,6 @@ class MainActivity : AppCompatActivity(), RecyclerViewInterface {
 
     override fun onPokemonClicked(pokemonId: Int) {
         val intent = Intent(this, PokemonDetailsActivity::class.java)
-//        val args = Bundle()
-//        args.putSerializable("POKEMONSLIST", viewModel.pokemonData as ArrayList)
-//        intent.putExtra("BUNDLE", args)
         intent.putExtra("POKEMON", pokemonId)
         startActivity(intent)
     }

@@ -6,38 +6,49 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.pokedex.R
 import com.example.pokedex.databinding.PokemonDetailsBinding
-import com.example.pokedex.main.database.AppDatabase
 import com.example.pokedex.main.database.PokemonEntity
-import com.example.pokedex.main.model.DatabaseObject
 
 class PokemonDetailsActivity : AppCompatActivity() {
     private lateinit var binding: PokemonDetailsBinding
-    private var pokemonNumber: Int = 0
-    private var db : AppDatabase? = DatabaseObject.database
-    private var pokemonsList: List<PokemonEntity>? = db?.pokemonDAO()?.getAll()
+    private var position: Int = 0
+    private lateinit var viewModel: PokemonDetailsViewModel
+    private var pokemonsList: List<PokemonEntity>? = null
     private enum class Arrow {
         RIGHT, LEFT
     }
 
-    /// TODO refactor activity using ViewModel class
-    /// TODO fix visibility bug (types and abilities)
-    /// TODO replace logic to work with single pokemons
+    /// TODO implements pokemon animation
+    /// TODO setup progress bar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = PokemonDetailsBinding.inflate(layoutInflater)
-
-        Log.i("POKEMON", "Entrou na details")
-
         setContentView(binding.root)
-//        val args : Bundle? = intent.getBundleExtra("BUNDLE")
-//        pokemonsList = args?.get("POKEMONSLIST") as ArrayList<PokemonResponseDTO>?
-        pokemonNumber = intent.getIntExtra("POKEMON", 0)
-        pokemonsList?.let { bindPokemonDetails(pokemonsList!![pokemonNumber]) }
+        setupViewModel()
+        position = intent.getIntExtra("POKEMON", 0)
+        Log.e("details", position.toString())
+        getPokemon()
+        setupObservers()
         setupOnClickListeners()
+    }
+
+    private fun setupViewModel() {
+        viewModel = ViewModelProvider(this)[PokemonDetailsViewModel::class.java]
+    }
+
+    private fun getPokemon() {
+        viewModel.getPokemonList()
+    }
+
+    private fun setupObservers() {
+        viewModel.pokemonCompleteList.observe(this@PokemonDetailsActivity) { pokemonCompleteList ->
+            pokemonsList = pokemonCompleteList
+            bindPokemonDetails(pokemonsList as MutableList<PokemonEntity>)
+        }
     }
 
     private fun setupOnClickListeners() {
@@ -52,34 +63,34 @@ class PokemonDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun bindPokemonDetails(pokemon: PokemonEntity) {
+    private fun bindPokemonDetails(pokemonList: MutableList<PokemonEntity>) {
         var completeId : String? =
-            when(pokemon?.id.toString().length) {
+            when(pokemonList[position].id.toString().length) {
                 1 -> "#00"
                 2 -> "#0"
                 else -> "#"
             }
         with(binding) {
-            if (pokemonsList?.first() == pokemon) arrowLeft.visibility = View.GONE
-            if (pokemonsList?.lastIndex == pokemon.id) arrowRight.visibility = View.GONE
-            Glide.with(applicationContext).load(pokemon.sprite).into(pokemonImage)
-            pokemonName.text = pokemon.name
-            pokemonType1.text = pokemon.types[0]
-            pokemonId.text = completeId.plus(pokemon.id.toString())
-            if(pokemon.types.size > 1) {
-                pokemonType2.text = pokemon.types[1]
-                pokemonType2.background.setColorFilter(Color.parseColor(getString(getColorResource(pokemon.types[1]))), PorterDuff.Mode.SRC_OVER)
+            if (pokemonList?.first() == pokemonList[position]) arrowLeft.visibility = View.GONE
+            if (pokemonList?.lastIndex == pokemonList[position].id) arrowRight.visibility = View.GONE
+            Glide.with(applicationContext).load(pokemonList[position].sprite).into(pokemonImage)
+            pokemonName.text = pokemonList[position].name
+            pokemonType1.text = pokemonList[position].types[0]
+            pokemonId.text = completeId.plus(pokemonList[position].id.toString())
+            if(pokemonList[position].types.size > 1) {
+                pokemonType2.text = pokemonList[position].types[1]
+                pokemonType2.background.setColorFilter(Color.parseColor(getString(getColorResource(pokemonList[position].types[1]))), PorterDuff.Mode.SRC_OVER)
             }
             else pokemonType2.visibility = View.GONE
-            pokemonWeight.text = convertPokemonMeasures(pokemon.weight).plus(" kg")
-            pokemonHeight.text = convertPokemonMeasures(pokemon.height).plus(" m")
-            pokemonMove1.text = pokemon.abilities[0]
-            if(pokemon.abilities.size > 1) pokemonMove2.text = pokemon.abilities[1]
+            pokemonWeight.text = convertPokemonMeasures(pokemonList[position].weight).plus(" kg")
+            pokemonHeight.text = convertPokemonMeasures(pokemonList[position].height).plus(" m")
+            pokemonMove1.text = pokemonList[position].abilities[0]
+            if(pokemonList[position].abilities.size > 1) pokemonMove2.text = pokemonList[position].abilities[1]
             else pokemonMove2.visibility = View.GONE
-            pokemonType1.background.setColorFilter(Color.parseColor(getString(getColorResource(pokemon.types[0]))), PorterDuff.Mode.SRC_OVER)
-            pokemonDetails.setBackgroundColor(resources.getColor(getColorResource(pokemon.types[0])))
-            titleAbout.setTextColor(resources.getColor(getColorResource(pokemon.types[0])))
-            titleStatsLayout.setTextColor(resources.getColor(getColorResource(pokemon.types[0])))
+            pokemonType1.background.setColorFilter(Color.parseColor(getString(getColorResource(pokemonList[position].types[0]))), PorterDuff.Mode.SRC_OVER)
+            pokemonDetails.setBackgroundColor(resources.getColor(getColorResource(pokemonList[position].types[0])))
+            titleAbout.setTextColor(resources.getColor(getColorResource(pokemonList[position].types[0])))
+            titleStatsLayout.setTextColor(resources.getColor(getColorResource(pokemonList[position].types[0])))
         }
     }
 
@@ -88,17 +99,17 @@ class PokemonDetailsActivity : AppCompatActivity() {
             when (arrow) {
                 Arrow.RIGHT -> {
                     binding.arrowLeft.visibility = View.VISIBLE
-                    pokemonNumber++
+                    position++
                 }
 
                 Arrow.LEFT -> {
                     binding.arrowRight.visibility = View.VISIBLE
-                    pokemonNumber--
+                    position--
                 }
             }
             pokemonMove2.visibility = View.VISIBLE
             pokemonType2.visibility = View.VISIBLE
-            bindPokemonDetails(pokemonsList!![pokemonNumber])
+            pokemonsList?.let { bindPokemonDetails(it as MutableList<PokemonEntity>) }
         }
     }
 

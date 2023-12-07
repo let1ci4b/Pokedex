@@ -5,11 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokedex.databinding.CardPokemonBinding
-import com.example.pokedex.main.database.AppDatabase
 import com.example.pokedex.main.database.PokemonEntity
-import com.example.pokedex.main.model.DatabaseObject
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.example.pokedex.main.model.Constants
 
 class RecyclerViewAdapter(
     private val recyclerView: RecyclerView,
@@ -24,7 +21,7 @@ class RecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerViewViewHolder, position: Int) {
-        holder.bind(pokemonList[position], listener)
+        holder.bind(pokemonList[position], position, listener)
     }
 
     override fun getItemCount() = pokemonList.size
@@ -32,7 +29,6 @@ class RecyclerViewAdapter(
     @SuppressLint("NotifyDataSetChanged")
     fun addPokemon(pokemon: PokemonEntity) {
         pokemonList.add(pokemon)
-        pokemonList.sortedBy { it.id }
         notifyDataSetChanged()
         recyclerView.scrollToPosition(pokemonList.lastIndex)
     }
@@ -41,7 +37,14 @@ class RecyclerViewAdapter(
     fun addAllPokemons(pokemonCompleteList: List<PokemonEntity>) {
         pokemonList.clear()
         pokemonList.addAll(pokemonCompleteList)
-        pokemonList.sortedBy { it.id }
+        notifyDataSetChanged()
+    }
+
+    fun needToUpdateList(): Boolean = pokemonList.size < Constants.MAX_POKEMON_ID
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun filterList(filteredList: List<PokemonEntity>) {
+        pokemonList = filteredList.toMutableList()
         notifyDataSetChanged()
     }
 
