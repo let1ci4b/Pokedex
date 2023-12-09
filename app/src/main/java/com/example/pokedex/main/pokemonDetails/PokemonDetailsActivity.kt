@@ -64,19 +64,13 @@ class PokemonDetailsActivity : AppCompatActivity() {
     }
 
     private fun bindPokemonDetails(pokemonList: MutableList<PokemonEntity>) {
-        var completeId : String? =
-            when(pokemonList[position].id.toString().length) {
-                1 -> "#00"
-                2 -> "#0"
-                else -> "#"
-            }
         with(binding) {
-            if (pokemonList?.first() == pokemonList[position]) arrowLeft.visibility = View.GONE
-            if (pokemonList?.lastIndex == pokemonList[position].id) arrowRight.visibility = View.GONE
+            if (pokemonList.first() == pokemonList[position]) arrowLeft.visibility = View.GONE
+            if (pokemonList.lastIndex == pokemonList[position].id) arrowRight.visibility = View.GONE
             Glide.with(applicationContext).load(pokemonList[position].sprite).into(pokemonImage)
             pokemonName.text = pokemonList[position].name
             pokemonType1.text = pokemonList[position].types[0]
-            pokemonId.text = completeId.plus(pokemonList[position].id.toString())
+            pokemonId.text = "#".plus(completeNumber(pokemonList[position].id.toString()).plus(pokemonList[position].id.toString()))
             if(pokemonList[position].types.size > 1) {
                 pokemonType2.text = pokemonList[position].types[1]
                 pokemonType2.background.setColorFilter(Color.parseColor(getString(getColorResource(pokemonList[position].types[1]))), PorterDuff.Mode.SRC_OVER)
@@ -87,10 +81,48 @@ class PokemonDetailsActivity : AppCompatActivity() {
             pokemonMove1.text = pokemonList[position].abilities[0]
             if(pokemonList[position].abilities.size > 1) pokemonMove2.text = pokemonList[position].abilities[1]
             else pokemonMove2.visibility = View.GONE
+            hpValue.text = completeNumber(pokemonList[position].base_stats[0]).plus(pokemonList[position].base_stats[0])
+            atkValue.text = completeNumber(pokemonList[position].base_stats[0]).plus(pokemonList[position].base_stats[1])
+            defValue.text = completeNumber(pokemonList[position].base_stats[0]).plus(pokemonList[position].base_stats[2])
+            satkValue.text = completeNumber(pokemonList[position].base_stats[0]).plus(pokemonList[position].base_stats[3])
+            sdefValue.text = completeNumber(pokemonList[position].base_stats[0]).plus(pokemonList[position].base_stats[4])
+            spdValue.text = completeNumber(pokemonList[position].base_stats[0]).plus(pokemonList[position].base_stats[5])
+            hpTitle.setTextColor(resources.getColor(getColorResource(pokemonList[position].types[0])))
+            atkTitle.setTextColor(resources.getColor(getColorResource(pokemonList[position].types[0])))
+            defTitle.setTextColor(resources.getColor(getColorResource(pokemonList[position].types[0])))
+            satkTitle.setTextColor(resources.getColor(getColorResource(pokemonList[position].types[0])))
+            sdefTitle.setTextColor(resources.getColor(getColorResource(pokemonList[position].types[0])))
+            spdTitle.setTextColor(resources.getColor(getColorResource(pokemonList[position].types[0])))
+            hpProgressBar.progress = pokemonList[position].base_stats[0].toInt()
+            atkProgressBar.progress = pokemonList[position].base_stats[1].toInt()
+            defProgressBar.progress = pokemonList[position].base_stats[2].toInt()
+            satkProgressBar.progress = pokemonList[position].base_stats[3].toInt()
+            sdefProgressBar.progress = pokemonList[position].base_stats[4].toInt()
+            spdProgressBar.progress = pokemonList[position].base_stats[5].toInt()
+            hpProgressBar.setIndicatorColor(resources.getColor(getColorResource(pokemonList[position].types[0])))
+            //hpProgressBar.setBackgroundColor(resources.getColor(getColorResource(pokemonList[position].types[0])))
+            atkProgressBar.setIndicatorColor(resources.getColor(getColorResource(pokemonList[position].types[0])))
+            //atkProgressBar.setBackgroundColor(resources.getColor(getColorResource(pokemonList[position].types[0])))
+            defProgressBar.setIndicatorColor(resources.getColor(getColorResource(pokemonList[position].types[0])))
+            //defProgressBar.setBackgroundColor(resources.getColor(getColorResource(pokemonList[position].types[0])))
+            satkProgressBar.setIndicatorColor(resources.getColor(getColorResource(pokemonList[position].types[0])))
+            //satkProgressBar.setBackgroundColor(resources.getColor(getColorResource(pokemonList[position].types[0])))
+            sdefProgressBar.setIndicatorColor(resources.getColor(getColorResource(pokemonList[position].types[0])))
+            //sdefProgressBar.setBackgroundColor(resources.getColor(getColorResource(pokemonList[position].types[0])))
+            spdProgressBar.setIndicatorColor(resources.getColor(getColorResource(pokemonList[position].types[0])))
+            //spdProgressBar.setBackgroundColor(resources.getColor(getColorResource(pokemonList[position].types[0])))
             pokemonType1.background.setColorFilter(Color.parseColor(getString(getColorResource(pokemonList[position].types[0]))), PorterDuff.Mode.SRC_OVER)
-            pokemonDetails.setBackgroundColor(resources.getColor(getColorResource(pokemonList[position].types[0])))
+            pokemonDetails.setBackgroundColor((resources.getColor(getColorResource(pokemonList[position].types[0]))))
             titleAbout.setTextColor(resources.getColor(getColorResource(pokemonList[position].types[0])))
             titleStatsLayout.setTextColor(resources.getColor(getColorResource(pokemonList[position].types[0])))
+        }
+    }
+
+    private fun completeNumber(num : String) : String? {
+        when (num.length) {
+            1 -> return "00"
+            2 -> return "0"
+            else -> return null
         }
     }
 

@@ -77,8 +77,8 @@ class MainViewModel() : ViewModel() {
                 pokemon.sprites.other.officialArtwork.frontDefault,
                 pokemon.types.map { it.type.name },
                 pokemon.abilities.map { it.ability.name.toString() },
-                pokemon.flavor_text,
-                pokemon.stats.map { it.base_stat })
+                pokemon.stats.map { it.base_stat.toString() },
+                pokemon.flavor_text)
             Log.e("POKEMON", "Pokemon recebido: " + pokemon.name)
             db?.pokemonDAO()?.insertPokemons(entityPokemon)
             withContext(Dispatchers.Main) {

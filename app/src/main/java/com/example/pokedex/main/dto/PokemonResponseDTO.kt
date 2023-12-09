@@ -20,9 +20,9 @@ data class PokemonResponseDTO(
     val types : List<TypesDTO>,
     @SerializedName("abilities")
     val abilities : List<AbilitiesDTO>,
+    @SerializedName("stats")
+    val stats : List<BaseStatsDTO>,
     @SerializedName("flavor_text")
     val flavor_text : String?,
-    @SerializedName("stats")
-    val stats : List<BaseStatsDTO>
     ) : Serializable
 
