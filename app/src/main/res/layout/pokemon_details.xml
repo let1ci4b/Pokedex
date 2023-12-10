@@ -8,6 +8,7 @@
     android:background="@color/wireframe_grayscale" >
 
     <ImageView
+        android:id="@+id/imageView2"
         android:layout_width="235dp"
         android:layout_height="235dp"
         android:layout_marginTop="5dp"
@@ -21,31 +22,31 @@
         android:id="@+id/bar_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/iconBack"
             android:layout_width="33dp"
             android:layout_height="33dp"
-            android:layout_marginTop="22dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="22dp"
             android:src="@drawable/ic_arrow_back"
-            app:tint="@color/white"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/white" />
 
         <TextView
             android:id="@+id/pokemonName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Pokémon Name"
+            android:textColor="@color/white"
             android:textSize="26sp"
             android:textStyle="bold"
-            android:textColor="@color/white"
-            android:text="Pokémon Name"
             app:layout_constraintStart_toEndOf="@+id/iconBack"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -55,38 +56,41 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="29dp"
             android:layout_marginEnd="20dp"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:textColor="@color/white"
             android:text="#999"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ImageView
         android:id="@+id/pokemonData"
         android:layout_width="0dp"
-        android:layout_height="480dp"
-        android:layout_margin="5dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="180dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginHorizontal="5dp"
         android:background="@drawable/recycler_background"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" >
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bar_layout" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/TypesLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="5dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" >
+            app:layout_constraintTop_toBottomOf="@id/pokemonImage" >
 
             <TextView
                 android:id="@+id/pokemonType1"
-                android:layout_width="50dp"
-                android:layout_height="20dp"
+                android:layout_width="55dp"
+                android:layout_height="22dp"
                 android:background="@drawable/type_chip_1"
                 android:backgroundTint="@color/medium_grayscale"
                 android:gravity="center"
@@ -99,8 +103,8 @@
 
             <TextView
                 android:id="@+id/pokemonType2"
-                android:layout_width="50dp"
-                android:layout_height="20dp"
+                android:layout_width="55dp"
+                android:layout_height="22dp"
                 android:layout_marginStart="20dp"
                 android:background="@drawable/type_chip_2"
                 android:backgroundTint="@color/medium_grayscale"
@@ -118,7 +122,7 @@
             android:id="@+id/titleAbout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:text="About"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -133,7 +137,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginVertical="10dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/titleAbout" >
@@ -334,26 +338,27 @@
             android:id="@+id/pokemonDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginHorizontal="25dp"
             android:justificationMode="inter_word"
-            android:lineSpacingExtra="-2sp"
+            android:lineSpacingExtra="1sp"
             android:textSize="12sp"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layoutAbout"
+            app:layout_constraintBottom_toTopOf="@id/titleStatsLayout"
             tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc iaculis eros vitae tellus condimentum maximus sit amet in eros." />
 
         <TextView
             android:id="@+id/titleStatsLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginBottom="8dp"
             android:text="Base Stats"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/wireframe_grayscale"
-            app:layout_constraintTop_toBottomOf="@id/pokemonDescription"
+            app:layout_constraintBottom_toTopOf="@id/baseStatsLayout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -362,10 +367,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="25dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginBottom="25dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/titleStatsLayout" >
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/baseStatsNames"
@@ -611,48 +616,39 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/imagesLayout"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="40dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bar_layout">
-
         <ImageView
             android:id="@+id/arrowLeft"
             android:layout_width="35dp"
             android:layout_height="35dp"
+            android:layout_marginBottom="10dp"
             android:src="@drawable/arrow_left"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="80dp"
             app:tint="@color/white"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toTopOf="@id/pokemonData" />
 
         <ImageView
             android:id="@+id/arrowRight"
             android:layout_width="35dp"
             android:layout_height="35dp"
+            android:layout_marginBottom="10dp"
             android:src="@drawable/arrow_right"
             android:layout_marginRight="20dp"
             android:layout_marginTop="80dp"
             app:tint="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toTopOf="@id/pokemonData" />
 
         <ImageView
             android:id="@+id/pokemonImage"
             android:layout_width="210dp"
             android:layout_height="210dp"
+            android:layout_marginTop="20dp"
             android:src="@drawable/ic_default_pokemon"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/bar_layout" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

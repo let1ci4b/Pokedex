@@ -11,4 +11,6 @@ class PokemonRepository {
         .create(PokemonService::class.java)
 
     suspend fun getSinglePokemon(id: Int) = service.getSinglePokemon(id)
+
+    suspend fun getPokemonDescription(id: Int) = service.getPokemonDescription(id)
 }

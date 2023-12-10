@@ -51,11 +51,13 @@
             android:id="@+id/pokemonName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
+            android:layout_marginBottom="3dp"
+            android:textSize="12sp"
             android:textColor="@color/dark_grayscale"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/pokemonIcon"
+            app:layout_constraintBottom_toBottomOf="parent"
             tools:text="Pokémon Name" />
 
 

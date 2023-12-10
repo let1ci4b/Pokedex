@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.pokedex.main.api.PokemonRepository
 import com.example.pokedex.main.database.AppDatabase
 import com.example.pokedex.main.database.PokemonEntity
+import com.example.pokedex.main.dto.PokemonDescriptionResponseDTO
 import com.example.pokedex.main.dto.PokemonResponseDTO
 import com.example.pokedex.main.model.Constants
 import com.example.pokedex.main.model.DatabaseObject
@@ -54,7 +55,8 @@ class MainViewModel() : ViewModel() {
             if (pokemonList.find { pokemonEntity -> pokemonEntity.id == i } != null) continue
             else {
                 val pokemon = repository.getSinglePokemon(i)
-                addPokemonInDb(pokemon)
+                val pokemonDescription = repository.getPokemonDescription(i)
+                addPokemonInDb(pokemon, pokemonDescription)
             }
         }
     }
@@ -63,11 +65,12 @@ class MainViewModel() : ViewModel() {
         for (i in Constants.MIN_POKEMON_ID..Constants.MAX_POKEMON_ID) {
             yield()
             val pokemon = repository.getSinglePokemon(i)
-            addPokemonInDb(pokemon)
+            val pokemonDescription = repository.getPokemonDescription(i)
+            addPokemonInDb(pokemon, pokemonDescription)
         }
     }
 
-    private suspend fun addPokemonInDb(pokemon: PokemonResponseDTO) {
+    private suspend fun addPokemonInDb(pokemon: PokemonResponseDTO, pokemonDescription: PokemonDescriptionResponseDTO) {
         try {
             val entityPokemon = PokemonEntity(
                 pokemon.id,
@@ -78,7 +81,7 @@ class MainViewModel() : ViewModel() {
                 pokemon.types.map { it.type.name },
                 pokemon.abilities.map { it.ability.name.toString() },
                 pokemon.stats.map { it.base_stat.toString() },
-                pokemon.flavor_text)
+                getPokemonDescription(pokemonDescription))
             Log.e("POKEMON", "Pokemon recebido: " + pokemon.name)
             db?.pokemonDAO()?.insertPokemons(entityPokemon)
             withContext(Dispatchers.Main) {
@@ -89,6 +92,20 @@ class MainViewModel() : ViewModel() {
         }
     }
 
+    private fun getPokemonDescription(pokemonDescription: PokemonDescriptionResponseDTO) : String? {
+        var desc: String? = null
+        for (i in 0..pokemonDescription.text_entries.size+1) {
+            if(pokemonDescription.text_entries[i].language.name == "en") {
+                desc = pokemonDescription.text_entries[i].flavor_text
+                    .replace("\n", " ")
+                    .replace("POKéMON", "pokemon")
+                break
+            } else continue
+        }
+        return desc
+    }
+
+    /// TODO setup filter validation
     fun filterPokemonList(query: String?, recyclerViewAdapter: RecyclerViewAdapter) : Boolean {
         val filteredlist: ArrayList<PokemonEntity> = ArrayList()
 
