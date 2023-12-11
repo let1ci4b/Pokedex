@@ -94,7 +94,6 @@ class MainActivity : AppCompatActivity(), RecyclerViewInterface {
         }
     }
 
-
     private fun setupViewModel() {
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
     }

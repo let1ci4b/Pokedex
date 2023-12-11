@@ -22,7 +22,7 @@ class PokemonDetailsActivity : AppCompatActivity() {
     }
 
     /// TODO implements pokemon animation
-    /// TODO setup progress bar
+    /// TODO fix progress bar background
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
