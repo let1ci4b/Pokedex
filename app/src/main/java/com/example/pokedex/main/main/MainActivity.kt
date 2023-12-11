@@ -5,8 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Filter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -16,9 +18,7 @@ import com.example.pokedex.main.database.AppDatabase
 import com.example.pokedex.main.database.Converter
 import com.example.pokedex.main.model.DatabaseObject
 import com.example.pokedex.main.pokemonDetails.PokemonDetailsActivity
-import kotlinx.coroutines.cancelAndJoin
 import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil
-import java.lang.Exception
 
 
 class MainActivity : AppCompatActivity(), RecyclerViewInterface {
@@ -45,12 +45,13 @@ class MainActivity : AppCompatActivity(), RecyclerViewInterface {
     // TODO use layer list or gradient to implement inner shadow
     // TODO fix coroutines flux
     /// TODO replace hardcoded strings
-    /// TODO implements filter
+    /// TODO fix filter comportment on onresume
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = MainLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
     }
 
     override fun onResume() {
@@ -82,15 +83,68 @@ class MainActivity : AppCompatActivity(), RecyclerViewInterface {
             searchViewQuery.setOnTouchListener { view, motionEvent ->
                 isSearchModeOn = true
                 false }
-            /// TODO replace no results warning to handle with loading pokemons
+
             searchViewQuery.doOnTextChanged { text, start, before, count ->
-                if (!viewModel.filterPokemonList(searchViewQuery.text.toString(), recyclerViewAdapter)) {
-                    Log.i("POKEMON", "Entrou na details")
-                    Toast.makeText(this@MainActivity, "Sem resultados.", Toast.LENGTH_SHORT).show()
-                }
+                searchPokemons()
             }
+
             searchBar.setOnClickListener { isSearchModeOn = true }
             exitSearchIcon.setOnClickListener { isSearchModeOn = false }
+
+            filter.setOnClickListener { activePokemonFilter() }
+
+            radioButton1.setOnClickListener { setupPokemonFilter(MainViewModel.Filter.NUMBER) }
+
+            radioButton2.setOnClickListener { setupPokemonFilter(MainViewModel.Filter.NAME) }
+        }
+    }
+
+    /// TODO replace no results warning to handle with loading pokemons
+    private fun searchPokemons() {
+        if (!viewModel.searchPokemon(binding.searchViewQuery.text.toString(), recyclerViewAdapter)) {
+            Log.i("POKEMON", "Entrou na details")
+            Toast.makeText(this@MainActivity, "Sem resultados.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun activePokemonFilter() {
+        with(binding) {
+            when {
+                filterNumber.isVisible -> {
+                    radioButton1.isChecked = true
+                    radioButton2.isChecked = false
+                }
+                filterText.isVisible -> {
+                    radioButton1.isChecked = false
+                    radioButton2.isChecked = true
+                }
+            }
+
+            if (filterConstraint.isVisible) {
+                filterConstraint.visibility = View.GONE
+                fadedBackground.visibility = View.GONE
+            } else {
+                filterConstraint.visibility = View.VISIBLE
+                fadedBackground.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun setupPokemonFilter(filter: MainViewModel.Filter) {
+        with(binding) {
+            when (filter) {
+                MainViewModel.Filter.NUMBER -> {
+                    filterNumber.visibility = View.VISIBLE
+                    filterText.visibility = View.GONE
+                }
+                MainViewModel.Filter.NAME -> {
+                    filterNumber.visibility = View.GONE
+                    filterText.visibility = View.VISIBLE
+                }
+            }
+            viewModel.filterPokemonList(filter, recyclerViewAdapter)
+            filterConstraint.visibility = View.GONE
+            fadedBackground.visibility = View.GONE
         }
     }
 

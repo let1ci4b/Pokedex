@@ -18,6 +18,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
+import java.lang.reflect.Field
 
 class MainViewModel() : ViewModel() {
     private val repository = PokemonRepository()
@@ -30,6 +31,10 @@ class MainViewModel() : ViewModel() {
     val pokemonCompleteListLiveData: LiveData<List<PokemonEntity>> = _pokemonCompleteListLiveData
 
     private var pokemonList : MutableList<PokemonEntity> = mutableListOf()
+
+    enum class Filter {
+        NUMBER, NAME
+    }
 
     @OptIn(DelicateCoroutinesApi::class)
     fun getPokemon() {
@@ -106,7 +111,7 @@ class MainViewModel() : ViewModel() {
     }
 
     /// TODO setup filter validation
-    fun filterPokemonList(query: String?, recyclerViewAdapter: RecyclerViewAdapter) : Boolean {
+    fun searchPokemon(query: String?, recyclerViewAdapter: RecyclerViewAdapter) : Boolean {
         val filteredlist: ArrayList<PokemonEntity> = ArrayList()
 
         try {
@@ -123,6 +128,17 @@ class MainViewModel() : ViewModel() {
         else {
             recyclerViewAdapter.filterList(filteredlist)
             true
+        }
+    }
+
+    fun filterPokemonList(filter: Filter, recyclerViewAdapter: RecyclerViewAdapter) {
+        when(filter) {
+            Filter.NAME -> {
+                recyclerViewAdapter.filterList(pokemonList.sortedBy { pokemonEntity -> pokemonEntity.name })
+            }
+            Filter.NUMBER -> {
+                recyclerViewAdapter.filterList(pokemonList.sortedBy { pokemonEntity -> pokemonEntity.id })
+            }
         }
     }
 }
