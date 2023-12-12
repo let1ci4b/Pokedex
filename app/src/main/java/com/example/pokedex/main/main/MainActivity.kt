@@ -24,6 +24,7 @@ import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil
 class MainActivity : AppCompatActivity(), RecyclerViewInterface {
     private lateinit var binding: MainLayoutBinding
     private lateinit var recyclerViewAdapter: RecyclerViewAdapter
+    private var databaseReference: AppDatabase? = null
 
     private var isSearchModeOn : Boolean = false
         set(value) {
@@ -51,11 +52,6 @@ class MainActivity : AppCompatActivity(), RecyclerViewInterface {
         super.onCreate(savedInstanceState)
         binding = MainLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-    }
-
-    override fun onResume() {
-        super.onResume()
         setupDatabase()
         setupViewModel()
         setupObservers()
@@ -64,16 +60,17 @@ class MainActivity : AppCompatActivity(), RecyclerViewInterface {
         setupPokemonList()
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
     private fun setupDatabase() {
-        DatabaseObject.database = Room
-            .databaseBuilder(this, AppDatabase::class.java, "pokedex-database")
-            .addTypeConverter(Converter())
-            .build()
+        DatabaseObject.setupDatabase(this)
+        DatabaseObject.database?.let { databaseReference = it }
     }
 
     override fun onPause() {
         super.onPause()
-//        viewModel.jobCoroutine?.cancel(null)
         isSearchModeOn = false
     }
 
@@ -152,24 +149,24 @@ class MainActivity : AppCompatActivity(), RecyclerViewInterface {
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
     }
 
+    /// TODO revise this loading flux comportment
     private fun setupPokemonList() {
-        if (recyclerViewAdapter.needToUpdateList()) viewModel.getPokemon()
+        if (recyclerViewAdapter.needToUpdateList() && (viewModel.jobCoroutine?.isActive == false || viewModel.jobCoroutine?.isActive == null)) {
+            viewModel.getPokemon()
+        }
     }
 
     private fun setupObservers() {
-        viewModel.pokemonLiveData.observe(this@MainActivity) { pokemon ->
-            recyclerViewAdapter.addPokemon(pokemon)
-        }
-
         viewModel.pokemonCompleteListLiveData.observe(this@MainActivity) { pokemonCompleteList ->
             recyclerViewAdapter.addAllPokemons(pokemonCompleteList)
+            binding.loadingLayout.visibility = View.GONE
         }
     }
 
     private fun setupRecyclerView() {
         with(binding) {
             recyclerViewAdapter = RecyclerViewAdapter(recyclerView, this@MainActivity)
-            var gridlayout = GridLayoutManager(this@MainActivity, 3)
+            val gridlayout = GridLayoutManager(this@MainActivity, 3)
             binding.recyclerView.apply {
                 setHasFixedSize(false)
                 adapter = recyclerViewAdapter

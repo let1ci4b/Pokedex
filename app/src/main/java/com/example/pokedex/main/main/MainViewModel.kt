@@ -25,8 +25,6 @@ class MainViewModel() : ViewModel() {
     private val db : AppDatabase? = DatabaseObject.database
     var jobCoroutine: Job? = null
 
-    private val _pokemonLiveData = MutableLiveData<PokemonEntity>()
-    val pokemonLiveData: LiveData<PokemonEntity> = _pokemonLiveData
     private val _pokemonCompleteListLiveData = MutableLiveData<List<PokemonEntity>>()
     val pokemonCompleteListLiveData: LiveData<List<PokemonEntity>> = _pokemonCompleteListLiveData
 
@@ -36,23 +34,42 @@ class MainViewModel() : ViewModel() {
         NUMBER, NAME
     }
 
+
     @OptIn(DelicateCoroutinesApi::class)
     fun getPokemon() {
         jobCoroutine = GlobalScope.launch {
-            pokemonList.clear()
             db?.pokemonDAO()?.getAll()?.sortedBy { pokemonEntity -> pokemonEntity.id }
                 ?.let { pokemonList.addAll(it) }
 
-            if (pokemonList.isNotEmpty()) {
+            if (pokemonList.isEmpty()) downloadAllPokemons()
+            else if (pokemonList.size < Constants.MAX_POKEMON_ID) downloadMissingPokemons()
+            else {
                 withContext(Dispatchers.Main) {
                     _pokemonCompleteListLiveData.value = pokemonList
                 }
             }
-
-            if (pokemonList.isEmpty()) downloadAllPokemons()
-            else if (pokemonList.size < Constants.MAX_POKEMON_ID) downloadMissingPokemons()
         }
     }
+
+//    @OptIn(DelicateCoroutinesApi::class)
+//    fun getPokemon() {
+//        jobCoroutine = GlobalScope.launch {
+//            db?.pokemonDAO()?.getAll()?.sortedBy { pokemonEntity -> pokemonEntity.id }
+//                ?.let {
+//                    pokemonList.clear()
+//                    pokemonList.addAll(it)
+//                }
+//
+//            if (pokemonList.isNotEmpty()) {
+//                withContext(Dispatchers.Main) {
+//                    _pokemonCompleteListLiveData.value = pokemonList
+//                }
+//            }
+//
+//            if (pokemonList.isEmpty()) downloadAllPokemons()
+//            else if (pokemonList.size < Constants.MAX_POKEMON_ID) downloadMissingPokemons()
+//        }
+//    }
 
     private suspend fun downloadMissingPokemons() {
         for (i in Constants.MIN_POKEMON_ID..Constants.MAX_POKEMON_ID) {
@@ -64,6 +81,9 @@ class MainViewModel() : ViewModel() {
                 addPokemonInDb(pokemon, pokemonDescription)
             }
         }
+        withContext(Dispatchers.Main) {
+            _pokemonCompleteListLiveData.value = pokemonList
+        }
     }
 
     private suspend fun downloadAllPokemons() {
@@ -73,9 +93,12 @@ class MainViewModel() : ViewModel() {
             val pokemonDescription = repository.getPokemonDescription(i)
             addPokemonInDb(pokemon, pokemonDescription)
         }
+        withContext(Dispatchers.Main) {
+            _pokemonCompleteListLiveData.value = pokemonList
+        }
     }
 
-    private suspend fun addPokemonInDb(pokemon: PokemonResponseDTO, pokemonDescription: PokemonDescriptionResponseDTO) {
+    private fun addPokemonInDb(pokemon: PokemonResponseDTO, pokemonDescription: PokemonDescriptionResponseDTO) {
         try {
             val entityPokemon = PokemonEntity(
                 pokemon.id,
@@ -89,9 +112,6 @@ class MainViewModel() : ViewModel() {
                 getPokemonDescription(pokemonDescription))
             Log.e("POKEMON", "Pokemon recebido: " + pokemon.name)
             db?.pokemonDAO()?.insertPokemons(entityPokemon)
-            withContext(Dispatchers.Main) {
-                _pokemonLiveData.value = entityPokemon
-            }
         } catch (e: Exception) {
             e.printStackTrace()
         }

@@ -26,12 +26,8 @@ class RecyclerViewAdapter(
 
     override fun getItemCount() = pokemonList.size
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun addPokemon(pokemon: PokemonEntity) {
-        pokemonList.add(pokemon)
-        notifyDataSetChanged()
-        recyclerView.scrollToPosition(pokemonList.lastIndex)
-    }
+    /// TODO scroll to position user was before on resume
+//    recyclerView.scrollToPosition(pokemonList.lastIndex)
 
     @SuppressLint("NotifyDataSetChanged")
     fun addAllPokemons(pokemonCompleteList: List<PokemonEntity>) {
