@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">Pokedex</string>
+    <string name="search">Search</string>
+    <string name="filter">Sort by:</string>
+    <string name="number">Number</string>
+    <string name="name">Name</string>
+    <string name="loading_advertisement">Capturing some Pokemons</string>
+    <string name="about_title">About</string>
+    <string name="base_stats_title">Base Stats</string>
+    <string name="weight_title">Weight</string>
+    <string name="height_title">Height</string>
+    <string name="moves_title">Moves</string>
+    <string name="hp_title">HP</string>
+    <string name="atk_title">ATK</string>
+    <string name="def_title">DEF</string>
+    <string name="satk_title">SATK</string>
+    <string name="sdef_title">SDEF</string>
+    <string name="spd_title">SPD</string>
 </resources>

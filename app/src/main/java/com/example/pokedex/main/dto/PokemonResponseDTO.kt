@@ -3,8 +3,6 @@ package com.example.pokedex.main.dto
 import com.google.gson.annotations.SerializedName // Retrofit recurse to indicate a JSON serialization
 import java.io.Serializable
 
-/// TODO implements base stats and description text
-
 data class PokemonResponseDTO(
     @SerializedName("id")
     var id : Int,

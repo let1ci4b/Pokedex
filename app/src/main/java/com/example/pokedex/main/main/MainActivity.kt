@@ -1,13 +1,17 @@
 package com.example.pokedex.main.main
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Filter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
@@ -29,11 +33,13 @@ class MainActivity : AppCompatActivity(), RecyclerViewInterface {
     private var isSearchModeOn : Boolean = false
         set(value) {
             with(binding) {
-                if(value) exitSearchIcon.visibility = View.VISIBLE
+                if(value) {
+                    exitSearchIcon.visibility = View.VISIBLE
+                    UIUtil.showKeyboard(this@MainActivity, searchViewQuery)
+                }
                 else {
                     exitSearchIcon.visibility = View.GONE
                     recyclerView.requestFocus()
-                    Log.i("POKEMON", "Entrou na foco recycle")
                     UIUtil.hideKeyboard(this@MainActivity, searchViewQuery)
                     searchViewQuery.setText("")
                 }
@@ -44,7 +50,6 @@ class MainActivity : AppCompatActivity(), RecyclerViewInterface {
     private lateinit var viewModel: MainViewModel
 
     // TODO use layer list or gradient to implement inner shadow
-    // TODO fix coroutines flux
     /// TODO replace hardcoded strings
     /// TODO fix filter comportment on onresume
 
@@ -57,11 +62,11 @@ class MainActivity : AppCompatActivity(), RecyclerViewInterface {
         setupObservers()
         setupRecyclerView()
         setupListeners(null)
-        setupPokemonList()
     }
 
     override fun onResume() {
         super.onResume()
+        setupPokemonList()
     }
 
     private fun setupDatabase() {
@@ -71,7 +76,7 @@ class MainActivity : AppCompatActivity(), RecyclerViewInterface {
 
     override fun onPause() {
         super.onPause()
-        isSearchModeOn = false
+        if(binding.searchViewQuery.isEnabled) isSearchModeOn = false
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -93,10 +98,19 @@ class MainActivity : AppCompatActivity(), RecyclerViewInterface {
             radioButton1.setOnClickListener { setupPokemonFilter(MainViewModel.Filter.NUMBER) }
 
             radioButton2.setOnClickListener { setupPokemonFilter(MainViewModel.Filter.NAME) }
+
+            tryAgainIcon.setOnClickListener { setupPokemonList() }
         }
     }
 
-    /// TODO replace no results warning to handle with loading pokemons
+    private fun isOnline(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+
+        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+    }
+
     private fun searchPokemons() {
         if (!viewModel.searchPokemon(binding.searchViewQuery.text.toString(), recyclerViewAdapter)) {
             Log.i("POKEMON", "Entrou na details")
@@ -149,17 +163,48 @@ class MainActivity : AppCompatActivity(), RecyclerViewInterface {
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
     }
 
-    /// TODO revise this loading flux comportment
     private fun setupPokemonList() {
         if (recyclerViewAdapter.needToUpdateList() && (viewModel.jobCoroutine?.isActive == false || viewModel.jobCoroutine?.isActive == null)) {
-            viewModel.getPokemon()
+            if (isOnline(this)) {
+                viewModel.getPokemon()
+                setupLoadingLayout(true)
+            }
+            else setupLoadingLayout(false)
+        }
+    }
+
+    private fun setupLoadingLayout(isOnline : Boolean) {
+        with(binding) {
+            when (isOnline) {
+                true -> {
+                    loadingText.visibility = View.VISIBLE
+                    mainLoading.visibility = View.VISIBLE
+                    tryAgainIcon.visibility = View.GONE
+                }
+                false -> {
+                    loadingText.visibility = View.GONE
+                    mainLoading.visibility = View.GONE
+                    tryAgainIcon.visibility = View.VISIBLE
+                    Toast.makeText(this@MainActivity, "Verify your internet conection and try again.", Toast.LENGTH_SHORT).show()
+                }
+            }
+            header.children.forEach {
+                it.isEnabled = false
+            }
+            searchViewQuery.isEnabled = false
         }
     }
 
     private fun setupObservers() {
-        viewModel.pokemonCompleteListLiveData.observe(this@MainActivity) { pokemonCompleteList ->
-            recyclerViewAdapter.addAllPokemons(pokemonCompleteList)
-            binding.loadingLayout.visibility = View.GONE
+        with(binding) {
+            viewModel.pokemonCompleteListLiveData.observe(this@MainActivity) { pokemonCompleteList ->
+                recyclerViewAdapter.addAllPokemons(pokemonCompleteList)
+                binding.loadingLayout.visibility = View.GONE
+                header.children.forEach {
+                    it.isEnabled = true
+                }
+                searchViewQuery.isEnabled = true
+            }
         }
     }
 

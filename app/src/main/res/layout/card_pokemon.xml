@@ -58,7 +58,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/pokemonIcon"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:text="Pokémon Name" />
+            tools:text="Pokemon Name" />
 
 
 
