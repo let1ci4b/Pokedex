@@ -13,7 +13,7 @@ class RecyclerViewAdapter(
     private val listener: RecyclerViewInterface
 ) : RecyclerView.Adapter<RecyclerViewViewHolder>() {
 
-    private var pokemonList: MutableList<PokemonEntity> = mutableListOf()
+    private var pokemonList : MutableList<PokemonEntity> = mutableListOf()
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerViewViewHolder {
         val binding = CardPokemonBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
@@ -25,9 +25,6 @@ class RecyclerViewAdapter(
     }
 
     override fun getItemCount() = pokemonList.size
-
-    /// TODO scroll to position user was before on resume
-//    recyclerView.scrollToPosition(pokemonList.lastIndex)
 
     @SuppressLint("NotifyDataSetChanged")
     fun addAllPokemons(pokemonCompleteList: List<PokemonEntity>) {

@@ -1,11 +1,5 @@
 package com.example.pokedex.main.main
 
-import android.content.Context
-import android.content.ContextWrapper
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,6 +10,7 @@ import com.example.pokedex.main.dto.PokemonDescriptionResponseDTO
 import com.example.pokedex.main.dto.PokemonResponseDTO
 import com.example.pokedex.main.model.Constants
 import com.example.pokedex.main.model.DatabaseObject
+import com.example.pokedex.main.model.Filter
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -23,9 +18,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
-import okhttp3.OkHttpClient
-import java.lang.reflect.Field
-import java.util.concurrent.TimeUnit
 
 class MainViewModel() : ViewModel() {
     private val repository = PokemonRepository()
@@ -35,12 +27,10 @@ class MainViewModel() : ViewModel() {
     private val _pokemonCompleteListLiveData = MutableLiveData<List<PokemonEntity>>()
     val pokemonCompleteListLiveData: LiveData<List<PokemonEntity>> = _pokemonCompleteListLiveData
 
+    private val _pokemonsLoadingLiveData = MutableLiveData<Boolean>()
+    val pokemonsLoadingLiveData: LiveData<Boolean> = _pokemonsLoadingLiveData
+
     private var pokemonList : MutableList<PokemonEntity> = mutableListOf()
-
-    enum class Filter {
-        NUMBER, NAME
-    }
-
 
     @OptIn(DelicateCoroutinesApi::class)
     fun getPokemon() {
@@ -70,7 +60,11 @@ class MainViewModel() : ViewModel() {
             else {
                 val pokemon = repository.getSinglePokemon(i)
                 val pokemonDescription = repository.getPokemonDescription(i)
-                addPokemonInDb(pokemon, pokemonDescription)
+                if (pokemon != null) {
+                    if (pokemonDescription != null) {
+                        addPokemonInDb(pokemon, pokemonDescription)
+                    }
+                }
             }
         }
         getPokemon()
@@ -81,7 +75,13 @@ class MainViewModel() : ViewModel() {
             yield()
             val pokemon = repository.getSinglePokemon(i)
             val pokemonDescription = repository.getPokemonDescription(i)
-            addPokemonInDb(pokemon, pokemonDescription)
+            if (pokemon != null) {
+                _pokemonsLoadingLiveData.value = true
+                if (pokemonDescription != null) {
+                    _pokemonsLoadingLiveData.value = true
+                    addPokemonInDb(pokemon, pokemonDescription)
+                } else _pokemonsLoadingLiveData.value = false
+            } else _pokemonsLoadingLiveData.value = false
         }
         getPokemon()
     }
@@ -98,7 +98,6 @@ class MainViewModel() : ViewModel() {
                 pokemon.abilities.map { it.ability.name.toString() },
                 pokemon.stats.map { it.base_stat.toString() },
                 getPokemonDescription(pokemonDescription))
-            Log.e("POKEMON", "Pokemon recebido: " + pokemon.name)
             db?.pokemonDAO()?.insertPokemons(entityPokemon)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -127,9 +126,7 @@ class MainViewModel() : ViewModel() {
                     filteredlist.add(item)
                 }
             }
-        } catch (Exception: Exception) {
-            return true
-        }
+        } catch (Exception: Exception) { return true }
 
         return if(filteredlist.isEmpty() && !query?.isEmpty()!!) false
         else {
@@ -138,12 +135,12 @@ class MainViewModel() : ViewModel() {
         }
     }
 
-    fun filterPokemonList(filter: Filter, recyclerViewAdapter: RecyclerViewAdapter) {
+    fun filterPokemonList(filter: Filter.FilterBy, recyclerViewAdapter: RecyclerViewAdapter) {
         when(filter) {
-            Filter.NAME -> {
+            Filter.FilterBy.NAME -> {
                 recyclerViewAdapter.filterList(pokemonList.sortedBy { pokemonEntity -> pokemonEntity.name })
             }
-            Filter.NUMBER -> {
+            Filter.FilterBy.NUMBER -> {
                 recyclerViewAdapter.filterList(pokemonList.sortedBy { pokemonEntity -> pokemonEntity.id })
             }
         }

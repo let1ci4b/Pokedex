@@ -16,4 +16,6 @@
     <string name="satk_title">SATK</string>
     <string name="sdef_title">SDEF</string>
     <string name="spd_title">SPD</string>
+    <string name="no_results_warning">No results</string>
+    <string name="no_connection_warning">"Verify your internet connection and try again."</string>
 </resources>

@@ -1,5 +1,7 @@
 package com.example.pokedex.main.pokemonDetails
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
@@ -262,5 +264,12 @@ class PokemonDetailsActivity : AppCompatActivity() {
                 } else R.color.primary
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        val intent = Intent()
+        intent.putExtra("POSITION", position)
+        setResult(Activity.RESULT_OK, intent)
     }
 }

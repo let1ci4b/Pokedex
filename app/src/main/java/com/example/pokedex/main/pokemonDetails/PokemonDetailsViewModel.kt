@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.pokedex.main.database.AppDatabase
 import com.example.pokedex.main.database.PokemonEntity
 import com.example.pokedex.main.model.DatabaseObject
+import com.example.pokedex.main.model.Filter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -19,7 +20,11 @@ class PokemonDetailsViewModel : ViewModel() {
 
     fun getPokemonList() {
         GlobalScope.launch() {
-            pokemonListFromDb = db?.pokemonDAO()?.getAll()?.sortedBy { pokemonEntity -> pokemonEntity.id }
+            pokemonListFromDb =
+                when(Filter.filter) {
+                    Filter.FilterBy.NUMBER -> db?.pokemonDAO()?.getAll()?.sortedBy { pokemonEntity -> pokemonEntity.id }
+                    Filter.FilterBy.NAME -> db?.pokemonDAO()?.getAll()?.sortedBy { pokemonEntity -> pokemonEntity.name }
+                }
             withContext(Dispatchers.Main) {
                 _pokemonCompleteList.value = pokemonListFromDb
             }
