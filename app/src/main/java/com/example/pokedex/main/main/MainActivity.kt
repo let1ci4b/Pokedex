@@ -84,34 +84,26 @@ class MainActivity : AppCompatActivity(), RecyclerViewInterface {
     }
 
     private fun setupPokemonList() {
-        try {
-            if (recyclerViewAdapter.needToUpdateList() && (viewModel.jobCoroutine?.isActive == false || viewModel.jobCoroutine?.isActive == null)) {
-                if (isOnline(this)) {
-                    viewModel.getPokemon()
-                    setupLoadingLayout(true)
-                }
-                else setupLoadingLayout(false)
-            }
-        } catch (e: ConnectException) {
-            setupPokemonList()
-        } catch (e: Exception) {
-            e.printStackTrace()
+        if (recyclerViewAdapter.needToUpdateList() && (viewModel.jobCoroutine?.isActive == false || viewModel.jobCoroutine?.isActive == null)) {
+            if (isOnline(this)) {
+                viewModel.getPokemon()
+                setupLoadingLayout(true)
+            } else setupLoadingLayout(false)
         }
     }
 
     private fun setupObservers() {
         with(binding) {
             viewModel.pokemonCompleteListLiveData.observe(this@MainActivity) { pokemonCompleteList ->
+                loadingLayout.visibility = View.GONE
                 recyclerViewAdapter.addAllPokemons(pokemonCompleteList)
-                binding.loadingLayout.visibility = View.GONE
                 header.children.forEach {
                     it.isEnabled = true
                 }
                 searchViewQuery.isEnabled = true
             }
-            /// TODO finish loading live data implementation to handle with connection lost
             viewModel.pokemonsLoadingLiveData.observe(this@MainActivity) { pokemonsLoading ->
-                if(!pokemonsLoading) setupPokemonList()
+                if(!pokemonsLoading) setupLoadingLayout(false)
             }
         }
     }

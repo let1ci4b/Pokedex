@@ -1,5 +1,6 @@
 package com.example.pokedex.main.main
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,6 +19,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
+import kotlin.math.log
 
 class MainViewModel() : ViewModel() {
     private val repository = PokemonRepository()
@@ -35,6 +37,7 @@ class MainViewModel() : ViewModel() {
     @OptIn(DelicateCoroutinesApi::class)
     fun getPokemon() {
         try {
+            pokemonList.clear()
             jobCoroutine = GlobalScope.launch {
                 db?.pokemonDAO()?.getAll()?.sortedBy { pokemonEntity -> pokemonEntity.id }
                     ?.let { pokemonList.addAll(it) }
@@ -60,10 +63,12 @@ class MainViewModel() : ViewModel() {
             else {
                 val pokemon = repository.getSinglePokemon(i)
                 val pokemonDescription = repository.getPokemonDescription(i)
-                if (pokemon != null) {
-                    if (pokemonDescription != null) {
-                        addPokemonInDb(pokemon, pokemonDescription)
-                    }
+                if (pokemon != null && pokemonDescription != null) {
+                    withContext(Dispatchers.Main) { _pokemonsLoadingLiveData.value = true }
+                    addPokemonInDb(pokemon, pokemonDescription)
+                } else {
+                    withContext(Dispatchers.Main) { _pokemonsLoadingLiveData.value = false }
+                    jobCoroutine?.cancel()
                 }
             }
         }
@@ -75,13 +80,13 @@ class MainViewModel() : ViewModel() {
             yield()
             val pokemon = repository.getSinglePokemon(i)
             val pokemonDescription = repository.getPokemonDescription(i)
-            if (pokemon != null) {
-                _pokemonsLoadingLiveData.value = true
-                if (pokemonDescription != null) {
-                    _pokemonsLoadingLiveData.value = true
-                    addPokemonInDb(pokemon, pokemonDescription)
-                } else _pokemonsLoadingLiveData.value = false
-            } else _pokemonsLoadingLiveData.value = false
+            if (pokemon != null && pokemonDescription != null) {
+                withContext(Dispatchers.Main) { _pokemonsLoadingLiveData.value = true }
+                addPokemonInDb(pokemon, pokemonDescription)
+            } else {
+                withContext(Dispatchers.Main) { _pokemonsLoadingLiveData.value = false }
+                jobCoroutine?.cancel()
+            }
         }
         getPokemon()
     }
@@ -98,6 +103,7 @@ class MainViewModel() : ViewModel() {
                 pokemon.abilities.map { it.ability.name.toString() },
                 pokemon.stats.map { it.base_stat.toString() },
                 getPokemonDescription(pokemonDescription))
+            Log.i("POKEMON", pokemon.name)
             db?.pokemonDAO()?.insertPokemons(entityPokemon)
         } catch (e: Exception) {
             e.printStackTrace()
