@@ -17,3 +17,5 @@ Pokedex desenvolvida para Android, em Kotlin, utilizando: MVVM, Retrofit, Gson, 
 [model](app/src/main/java/com/example/pokedex/main/model)
 
 [pokemonDetails](app/src/main/java/com/example/pokedex/main/pokemonDetails)
+
+[res - package layout](app/src/main/res/layout)
