@@ -33,6 +33,29 @@ A Pokédex é uma aplicação interativa que permite aos usuários consultar e e
 
 **- Material Design:** Implementação de componentes visuais seguindo as diretrizes modernas de UI/UX.
 
-**[PokéAPI](https://pokeapi.co/):** Fonte pública de dados sobre Pokémon, usada para alimentar a Pokédex com informações detalhadas.
+**- [PokéAPI](https://pokeapi.co/):** Fonte pública de dados sobre Pokémon, usada para alimentar a Pokédex com informações detalhadas.
 
+### ⚙️ Instalação e Execução
+#### Pré-requisitos
+- Android Studio 4.1+ (ou superior)
+- Java 8+
+- Gradle 6.5+
+  
+#### Passos para rodar o projeto localmente
+**1. Clone o repositório:**
+Abra o terminal e execute o seguinte comando para clonar o projeto para o seu ambiente local:
+```
+git clone https://github.com/let1ci4b/Pokedex.git
+```
+**2. Abra o projeto no Android Studio:**
+Após clonar o repositório, abra o Android Studio e selecione a opção `File -> Open`, e escolha o diretório onde o projeto foi clonado.
+
+**3. Sincronize as dependências do Gradle:**
+O Android Studio automaticamente sincroniza as dependências do projeto. Caso não ocorra, clique em `File -> Sync Project with Gradle Files`.
+
+**4. Configure um dispositivo de teste:**
+Escolha um dispositivo físico com Android 5.0 (Lollipop) ou superior, ou configure um emulador Android no Android Studio para testar a aplicação.
+
+**5. Execute o projeto:**
+Com o ambiente configurado, clique no botão `Run` ou use o atalho `Shift + F10` para compilar e rodar o projeto no dispositivo ou emulador selecionado.
 
