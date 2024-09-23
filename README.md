@@ -1,21 +1,38 @@
-# 📲 Pokedex
+# 📲 Pokédex
 
-Pokedex desenvolvida para Android, em Kotlin, utilizando: MVVM, Retrofit, Gson, Coroutines, Glide, LiveData, Room database e Material Design.
+## ✍🏻 Descrição
+A Pokédex é uma aplicação interativa que permite aos usuários consultar e explorar informações detalhadas sobre diversos Pokémons, incluindo tipos, peso, altura, habilidades e estatísticas. Desenvolvida com o objetivo de centralizar e facilitar o acesso a esses dados, a Pokédex é ideal tanto para iniciantes quanto para jogadores experientes.
 
-#### 🔍 API utilizada: [PokéAPI](https://pokeapi.co/)
+## 🔎 Funcionalidades
+**- Busca por Pokémon:** Pesquise por nome ou tipo.
 
-#### 🗂️ Packages:
+**- Ordenação de Pokémon:** Organize os Pokémons em ordem alfabética ou numérica.
 
-[api](app/src/main/java/com/example/pokedex/main/api)
+**- Exibição detalhada:** Informações completas de cada Pokémon, como peso, altura, tipos, habilidades e estatísticas.
 
-[database](app/src/main/java/com/example/pokedex/main/database)
+**- Visualização de Pokémon:** Imagens de cada Pokémon em vários ângulos.
 
-[dto](app/src/main/java/com/example/pokedex/main/dto)
+**- Interface interativa e responsiva:** Design pensado para facilitar a navegação e otimizar a experiência do usuário.
 
-[main](app/src/main/java/com/example/pokedex/main/main)
+**- Funcionalidade offline:** Acesse dados dos Pokémon armazenados no dispositivo, mesmo sem conexão à internet.
 
-[model](app/src/main/java/com/example/pokedex/main/model)
+## 👩🏻‍💻 Tecnologias Utilizadas
+**- Arquitetura MVVM (Model-View-ViewModel):** Organização clara e separação de responsabilidades, facilitando a manutenção e escalabilidade do projeto.
 
-[pokemonDetails](app/src/main/java/com/example/pokedex/main/pokemonDetails)
+**- Retrofit:** Utilizado para realizar requisições HTTP e consumir a API pública de dados de Pokémon.
 
-[res - package layout](app/src/main/res/layout)
+**- Gson:** Conversão de dados JSON da API para objetos Java/Kotlin.
+
+**- Coroutines:** Execução assíncrona para chamadas de rede, garantindo fluidez na interface do usuário.
+
+**- Glide:** Carregamento e cache eficiente de imagens dos Pokémon.
+
+**- LiveData:** Monitoramento de dados em tempo real, permitindo atualizações automáticas na interface.
+
+**- Room Database:** Armazenamento local de dados para acesso offline e persistência.
+
+**- Material Design:** Implementação de componentes visuais seguindo as diretrizes modernas de UI/UX.
+
+**[PokéAPI](https://pokeapi.co/):** Fonte pública de dados sobre Pokémon, usada para alimentar a Pokédex com informações detalhadas.
+
+
