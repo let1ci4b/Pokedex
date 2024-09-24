@@ -10,8 +10,6 @@ A Pokédex é uma aplicação interativa que permite aos usuários consultar e e
 
 **- Exibição detalhada:** Informações completas de cada Pokémon, como peso, altura, tipos, habilidades e estatísticas.
 
-**- Visualização de Pokémon:** Imagens de cada Pokémon em vários ângulos.
-
 **- Interface interativa e responsiva:** Design pensado para facilitar a navegação e otimizar a experiência do usuário.
 
 **- Funcionalidade offline:** Acesse dados dos Pokémon armazenados no dispositivo, mesmo sem conexão à internet.
