@@ -34,10 +34,11 @@ A Pokédex é uma aplicação interativa que permite aos usuários consultar e e
 **- [PokéAPI](https://pokeapi.co/):** Fonte pública de dados sobre Pokémon, usada para alimentar a Pokédex com informações detalhadas.
 
 ## ⚙️ Instalação e Execução
-### Pré-requisitos
-- Android Studio 4.1+ (ou superior)
-- Java 8+
-- Gradle 6.5+
+
+> [!IMPORTANT]
+> Android Studio 4.1+ (ou superior)
+> | Java 8+
+> | Gradle 6.5+
   
 ### Passos para rodar o projeto localmente
 **1. Clone o repositório:**
@@ -58,7 +59,8 @@ Escolha um dispositivo físico com Android 5.0 (Lollipop) ou superior, ou config
 Com o ambiente configurado, clique no botão `Run` ou use o atalho `Shift + F10` para compilar e rodar o projeto no dispositivo ou emulador selecionado.
 
 ## 😎 Autora
-#### Letícia Beatriz Souza
+> [!NOTE]
+> Letícia Beatriz Souza
 
 <a href="https://www.linkedin.com/in/leticia-beatriz015/" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank"></a> 
 
