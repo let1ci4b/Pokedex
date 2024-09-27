@@ -16,6 +16,7 @@ import com.example.pokedex.main.database.PokemonEntity
 
 class PokemonDetailsActivity : AppCompatActivity() {
     private lateinit var binding: PokemonDetailsBinding
+    private var selectedPokemonID: Int = 0
     private var position: Int = 0
     private lateinit var viewModel: PokemonDetailsViewModel
     private var pokemonsList: List<PokemonEntity>? = null
@@ -23,19 +24,22 @@ class PokemonDetailsActivity : AppCompatActivity() {
         RIGHT, LEFT
     }
 
-    /// TODO implements pokemon animation
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = PokemonDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupViewModel()
-        position = intent.getIntExtra("POKEMON", 0)
-        Log.e("details", position.toString())
+        selectedPokemonID = intent.getIntExtra("POKEMON", 0)
+        Log.e("details", selectedPokemonID.toString())
         getPokemon()
         setupObservers()
         setupOnClickListeners()
     }
+
+    fun getPokemonPositionById() {
+        position = pokemonsList?.indexOfFirst { it.id == selectedPokemonID }!!
+    }
+
 
     private fun setupViewModel() {
         viewModel = ViewModelProvider(this)[PokemonDetailsViewModel::class.java]
@@ -48,6 +52,7 @@ class PokemonDetailsActivity : AppCompatActivity() {
     private fun setupObservers() {
         viewModel.pokemonCompleteList.observe(this@PokemonDetailsActivity) { pokemonCompleteList ->
             pokemonsList = pokemonCompleteList
+            getPokemonPositionById()
             bindPokemonDetails(pokemonsList as MutableList<PokemonEntity>)
         }
     }

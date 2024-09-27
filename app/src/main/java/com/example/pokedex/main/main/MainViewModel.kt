@@ -19,7 +19,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
-import kotlin.math.log
 
 class MainViewModel() : ViewModel() {
     private val repository = PokemonRepository()
@@ -35,24 +34,30 @@ class MainViewModel() : ViewModel() {
     private var pokemonList : MutableList<PokemonEntity> = mutableListOf()
 
     @OptIn(DelicateCoroutinesApi::class)
+
     fun getPokemon() {
-        try {
-            pokemonList.clear()
-            jobCoroutine = GlobalScope.launch {
-                db?.pokemonDAO()?.getAll()?.sortedBy { pokemonEntity -> pokemonEntity.id }
-                    ?.let { pokemonList.addAll(it) }
+        jobCoroutine = GlobalScope.launch(Dispatchers.IO) {
+            try {
+                fetchPokemonFromDatabase()
 
                 if (pokemonList.isEmpty()) downloadAllPokemons()
                 else if (pokemonList.size < Constants.MAX_POKEMON_ID) downloadMissingPokemons()
-                else {
-                    withContext(Dispatchers.Main) {
-                        _pokemonCompleteListLiveData.value = pokemonList
-                    }
-                }
+                else postPokemonList()
+
+            } catch (e: Exception) {
+               Log.e("MainViewModel", "Unexpected error while trying to get pokemons")
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return
+        }
+    }
+
+    private fun fetchPokemonFromDatabase() {
+        pokemonList.clear()
+        db?.pokemonDAO()?.getAll()?.sortedBy { it.id }?.let { pokemonList.addAll(it) }
+    }
+
+    private suspend fun postPokemonList() {
+        withContext(Dispatchers.Main) {
+            _pokemonCompleteListLiveData.value = pokemonList
         }
     }
 
@@ -137,17 +142,20 @@ class MainViewModel() : ViewModel() {
         return if(filteredlist.isEmpty() && !query?.isEmpty()!!) false
         else {
             recyclerViewAdapter.filterList(filteredlist)
+            filterPokemonList(filteredlist, Filter.filter, recyclerViewAdapter)
             true
         }
     }
 
-    fun filterPokemonList(filter: Filter.FilterBy, recyclerViewAdapter: RecyclerViewAdapter) {
+    fun filterPokemonList(receivedList: MutableList<PokemonEntity>?, filter: Filter.FilterBy, recyclerViewAdapter: RecyclerViewAdapter) {
+        var listToFilter = receivedList?.takeIf { it.isNotEmpty() } ?: pokemonList
+
         when(filter) {
             Filter.FilterBy.NAME -> {
-                recyclerViewAdapter.filterList(pokemonList.sortedBy { pokemonEntity -> pokemonEntity.name })
+                recyclerViewAdapter.filterList(listToFilter.sortedBy { pokemonEntity -> pokemonEntity.name })
             }
             Filter.FilterBy.NUMBER -> {
-                recyclerViewAdapter.filterList(pokemonList.sortedBy { pokemonEntity -> pokemonEntity.id })
+                recyclerViewAdapter.filterList(listToFilter.sortedBy { pokemonEntity -> pokemonEntity.id })
             }
         }
     }

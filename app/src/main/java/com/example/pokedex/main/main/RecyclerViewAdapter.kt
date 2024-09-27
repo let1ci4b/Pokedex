@@ -21,8 +21,10 @@ class RecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerViewViewHolder, position: Int) {
-        holder.bind(pokemonList[position], position, listener)
+        val pokemon = pokemonList[position]
+        holder.bind(pokemon, listener)
     }
+
 
     override fun getItemCount() = pokemonList.size
 

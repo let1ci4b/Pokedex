@@ -25,7 +25,6 @@ import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil
 import java.io.IOException
 import java.net.ConnectException
 
-
 class MainActivity : AppCompatActivity(), RecyclerViewInterface {
     private lateinit var binding: MainLayoutBinding
     private lateinit var recyclerViewAdapter: RecyclerViewAdapter
@@ -49,8 +48,6 @@ class MainActivity : AppCompatActivity(), RecyclerViewInterface {
         }
 
     private lateinit var viewModel: MainViewModel
-
-    /// TODO try to treat timeout exception and connect exception
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,10 +82,7 @@ class MainActivity : AppCompatActivity(), RecyclerViewInterface {
 
     private fun setupPokemonList() {
         if (recyclerViewAdapter.needToUpdateList() && (viewModel.jobCoroutine?.isActive == false || viewModel.jobCoroutine?.isActive == null)) {
-            if (isOnline(this)) {
-                viewModel.getPokemon()
-                setupLoadingLayout(true)
-            } else setupLoadingLayout(false)
+            viewModel.getPokemon()
         }
     }
 
@@ -103,7 +97,7 @@ class MainActivity : AppCompatActivity(), RecyclerViewInterface {
                 searchViewQuery.isEnabled = true
             }
             viewModel.pokemonsLoadingLiveData.observe(this@MainActivity) { pokemonsLoading ->
-                if(!pokemonsLoading) setupLoadingLayout(false)
+                setupLoadingLayout(pokemonsLoading)
             }
         }
     }
@@ -219,17 +213,9 @@ class MainActivity : AppCompatActivity(), RecyclerViewInterface {
                     filterText.visibility = View.VISIBLE
                 }
             }
-            viewModel.filterPokemonList(Filter.filter, recyclerViewAdapter)
+            viewModel.filterPokemonList(null, Filter.filter, recyclerViewAdapter)
             isPokemonFilterOn(false)
         }
-    }
-
-    private fun isOnline(context: Context): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val network = connectivityManager.activeNetwork ?: return false
-        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
-
-        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
     }
 
     override fun onPokemonClicked(pokemonId: Int) {
