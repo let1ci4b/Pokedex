@@ -57,3 +57,9 @@ Escolha um dispositivo físico com Android 5.0 (Lollipop) ou superior, ou config
 **5. Execute o projeto:**
 Com o ambiente configurado, clique no botão `Run` ou use o atalho `Shift + F10` para compilar e rodar o projeto no dispositivo ou emulador selecionado.
 
+## 😎 Autora
+#### Letícia Beatriz Souza
+
+<a href="https://www.linkedin.com/in/leticia-beatriz015/" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank"></a> 
+
+
