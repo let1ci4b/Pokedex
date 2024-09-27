@@ -4,15 +4,15 @@
 A Pokédex é uma aplicação interativa que permite aos usuários consultar e explorar informações detalhadas sobre diversos Pokémons, incluindo tipos, peso, altura, habilidades e estatísticas. Desenvolvida com o objetivo de centralizar e facilitar o acesso a esses dados, a Pokédex é ideal tanto para iniciantes quanto para jogadores experientes.
 
 ## 🔎 Funcionalidades
-**- Busca por Pokémon:** Pesquise por nome ou tipo.
+- [x] **Busca por Pokémon:** Pesquise por nome ou ID.
 
-**- Ordenação de Pokémon:** Organize os Pokémons em ordem alfabética ou numérica.
+- [x] **Ordenação de Pokémon:** Organize os Pokémons em ordem alfabética ou numérica.
 
-**- Exibição detalhada:** Informações completas de cada Pokémon, como peso, altura, tipos, habilidades e estatísticas.
+- [x] **Exibição detalhada:** Visualize informações completas de cada Pokémon, como peso, altura, tipos, habilidades e estatísticas.
 
-**- Interface interativa e responsiva:** Design pensado para facilitar a navegação e otimizar a experiência do usuário.
+- [x] **Interface interativa e responsiva:** Navegue por uma interface pensada para facilitar a navegação e otimizar a experiência do usuário.
 
-**- Funcionalidade offline:** Acesse dados dos Pokémon armazenados no dispositivo, mesmo sem conexão à internet.
+- [x] **Funcionalidade offline:** Acesse dados dos Pokémon armazenados no dispositivo, mesmo sem conexão à internet.
 
 ## 👩🏻‍💻 Tecnologias Utilizadas
 **- Arquitetura MVVM (Model-View-ViewModel):** Organização clara e separação de responsabilidades, facilitando a manutenção e escalabilidade do projeto.
@@ -33,13 +33,14 @@ A Pokédex é uma aplicação interativa que permite aos usuários consultar e e
 
 **- [PokéAPI](https://pokeapi.co/):** Fonte pública de dados sobre Pokémon, usada para alimentar a Pokédex com informações detalhadas.
 
-### ⚙️ Instalação e Execução
-#### Pré-requisitos
-- Android Studio 4.1+ (ou superior)
-- Java 8+
-- Gradle 6.5+
+## ⚙️ Instalação e Execução
+
+> [!IMPORTANT]
+> Android Studio 4.1+ (ou superior)
+> | Java 8+
+> | Gradle 6.5+
   
-#### Passos para rodar o projeto localmente
+### Passos para rodar o projeto localmente
 **1. Clone o repositório:**
 Abra o terminal e execute o seguinte comando para clonar o projeto para o seu ambiente local:
 ```
@@ -56,4 +57,11 @@ Escolha um dispositivo físico com Android 5.0 (Lollipop) ou superior, ou config
 
 **5. Execute o projeto:**
 Com o ambiente configurado, clique no botão `Run` ou use o atalho `Shift + F10` para compilar e rodar o projeto no dispositivo ou emulador selecionado.
+
+## 😎 Autora
+> [!NOTE]
+> Letícia Beatriz Souza
+
+<a href="https://www.linkedin.com/in/leticia-beatriz015/" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank"></a> 
+
 
