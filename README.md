@@ -1,14 +1,14 @@
 # 📲 Pokédex
 
 ## ✍🏻 Descrição
-A Pokédex é uma aplicação interativa que permite aos usuários consultar e explorar informações detalhadas sobre diversos Pokémons, incluindo tipos, peso, altura, habilidades e estatísticas. Desenvolvida com o objetivo de centralizar e facilitar o acesso a esses dados, a Pokédex é ideal tanto para iniciantes quanto para jogadores experientes.
+A Pokédex é uma aplicação interativa que permite aos usuários consultar e explorar informações detalhadas sobre diversos Pokémons, incluindo dados como nome, tipo, peso, altura, movimentos e habilidades. Desenvolvida com o objetivo de centralizar e facilitar o acesso a esses dados, a Pokédex é ideal tanto para iniciantes quanto para jogadores experientes.
 
 ## 🔎 Funcionalidades
 - [x] **Busca por Pokémon:** Pesquise por nome ou ID.
 
 - [x] **Ordenação de Pokémon:** Organize os Pokémons em ordem alfabética ou numérica.
 
-- [x] **Exibição detalhada:** Visualize informações completas de cada Pokémon, como peso, altura, tipos, habilidades e estatísticas.
+- [x] **Exibição detalhada:** Visualize informações completas de cada Pokémon, como nome, tipo, peso, altura, movimentos e habilidades.
 
 - [x] **Interface interativa e responsiva:** Navegue por uma interface pensada para facilitar a navegação e otimizar a experiência do usuário.
 
