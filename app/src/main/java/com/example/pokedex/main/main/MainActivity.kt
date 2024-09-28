@@ -2,10 +2,7 @@ package com.example.pokedex.main.main
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -22,8 +19,6 @@ import com.example.pokedex.main.model.DatabaseObject
 import com.example.pokedex.main.model.Filter
 import com.example.pokedex.main.pokemonDetails.PokemonDetailsActivity
 import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil
-import java.io.IOException
-import java.net.ConnectException
 
 class MainActivity : AppCompatActivity(), RecyclerViewInterface {
     private lateinit var binding: MainLayoutBinding
@@ -150,9 +145,9 @@ class MainActivity : AppCompatActivity(), RecyclerViewInterface {
         }
     }
 
-    private fun setupLoadingLayout(isOnline : Boolean) {
+    private fun setupLoadingLayout(isLoading : Boolean) {
         with(binding) {
-            when (isOnline) {
+            when (isLoading) {
                 true -> {
                     loadingText.visibility = View.VISIBLE
                     mainLoading.visibility = View.VISIBLE

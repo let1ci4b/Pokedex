@@ -13,12 +13,6 @@ object DatabaseObject {
     var database : AppDatabase? = null
 
     fun setupDatabase(context: Context) {
-        val MIGRATION_1_2 = object : Migration(1, 2) {
-            override fun migrate(database: SupportSQLiteDatabase) {
-                // Adicionando uma nova coluna `base_stats`
-                database.execSQL("ALTER TABLE PokemonEntity ADD COLUMN base_stats TEXT")
-            }
-        }
 
         if (database == null) {
             database = Room
