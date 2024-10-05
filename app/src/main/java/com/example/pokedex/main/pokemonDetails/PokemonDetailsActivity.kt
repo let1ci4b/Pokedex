@@ -72,7 +72,7 @@ class PokemonDetailsActivity : AppCompatActivity() {
     private fun bindPokemonDetails(pokemonList: MutableList<PokemonEntity>) {
         with(binding) {
             if (pokemonList.first() == pokemonList[position]) arrowLeft.visibility = View.GONE
-            if (pokemonList.lastIndex == pokemonList[position].id) arrowRight.visibility = View.GONE
+            if (pokemonList.last() == pokemonList[position]) arrowRight.visibility = View.GONE
 
             var name = pokemonList[position].name
             pokemonName.text = name[0].toUpperCase().plus(name.substring(1))
